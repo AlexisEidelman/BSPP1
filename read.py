@@ -18,7 +18,7 @@ def _rename_bspp_cols(tab):
     return tab
 
 
-def read(path):
+def read(path=path):
     main_file = os.path.join(path, '2015-043-Extraction LCL PAGNIEZ.csv')
     tab = pd.read_csv(main_file, sep=',', encoding='utf8')
 
