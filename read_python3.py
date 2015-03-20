@@ -19,14 +19,17 @@ path = 'D:\data\BSPP'
 tab = read(path)
 tab.columns
 tab.index
+
 # Quels sont les motifs avec lesquels on se trompe le plus ?
-# Objectif : calculer la durée d'intervention moyenne par motif moyenne
+
+    ######################
+    #   Data Cleaning    #
+    ######################
 
 tab[u'motif_ini'].value_counts()
 z = tab[u'motif_ini'] == tab[u'motif']
 Counter(z)
 
-tab = pd.DataFrame(tab)
 tab.dtypes
 
 #On convertit toutes les variables en "object"
@@ -37,12 +40,20 @@ tab.id_intervention = tab.id_intervention.astype(object)
 tab["motif"] = tab["motif"].apply(zeros_rm)
 tab["motif_ini"] = tab["motif_ini"].apply(zeros_rm) #value error
 
+
+    ######################
+    #    Stats descr     #
+    ######################
 # Les index pour lesquels il y a une erreur
 erreurs = tab.motif_ini != tab.motif
 tab['erreur'] = erreurs
-tab.groupby("motif")['erreur'].sum()
+t_count_error = tab.groupby(["motif_ini","motif"])['erreur'].sum()
+t_count_error.sort(ascending=False)
+t_count_error
 
-tab.groupby(['motif', 'motif']).size()
-
+    ########################################
+    #    Durées moyenne / intervention     #
+    ########################################
+# Objectif : calculer la durée d'intervention moyenne par motif
 
 # Objectif : 
