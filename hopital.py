@@ -5,55 +5,59 @@ Created on Fri Mar 20 17:01:55 2015
 @author: Alexis Eidelman
 """
 
-import pandas as pd
-import os
+import numpy as np
 
-import
-
-path = 'D:\data\BSPP'
-main_file = os.path.join(path, '2015-043-Extraction LCL PAGNIEZ.csv')
-
-tab = pd.read_csv(main_file, sep=',', encoding='utf8')
-
-## quelques stats
-tab['Id_Intervention'].value_counts()
-tab[u'Id_Statut_Operationnel_Libelle_Statut_Operationnel'].value_counts()
-
-# recherche de variables redondantes
-tab.groupby(['Id_Intervention_Abrege_Motif', 'Code_Cri']).size()
-gp = tab.groupby(['Id_Statut_Operationnel_Libelle_Statut_Operationnel'])
-assert all(gp['Abrege_Statut_Operationnel'].nunique() == 1)
-# => on a une redondance, virer l'une des deux
-del tab['Abrege_Statut_Operationnel']
+from read import read
 
 
-
-def rename_bspp_cols(tab):
-    tab.columns = ['date', 'id_intervention', 'motif_ini', 'motif',
-                   'zone', 'zone_ini',
-                   'id_vehicule', 'type_ini', 'type', 'statut']
-
-
-
-## sujet: brainstorm
-
-
-# étudier les différences entre 'Id_Intervention_Abrege_Motif' et 'cri'
-# ce qui est établi et ce qui est constaté
-# => Demander à la BSPP si c'est grave de se tromper d'intervention, faire baisser ce taux en
-# regardant dans quels cas il se produit
-tab.groupby(['Id_Intervention_Abrege_Motif', 'Code_Cri']).size()
-
-## expliquer l'indisponibilité des véhicules
-# quel heure ont lieu les manques de personnels !
-tab[u'Id_Statut_Operationnel_Libelle_Statut_Operationnel'].value_counts()
+tab = read()
 
 ## guide des intéractions avec l'hopital
 hopital = [u'Transport hôpital', u"Arrivée hôpital", u"Quitte hôpital"]
-tab_hopital = tab[tab[u'Id_Statut_Operationnel_Libelle_Statut_Operationnel'].isin(hopital)]
+tab_hopital = tab[tab['statut'].isin(hopital)]
+gp = tab_hopital.groupby(['id_intervention', 'id_vehicule'])
+
+def etudie_groupe(gp, taille_du_groupe):
+    gp1 = gp.filter(lambda g: len(g) == taille_du_groupe)
+    #    gp1['statut'].value_counts()
+    #    gp1['indic'] = 1
+    #    gp1['test'] = gp1['indic'].cumsum()
+    gp1 = gp1[['id_intervention', 'zone', 'id_vehicule', 'type', 'statut']]
+    return gp1
+
+gp1 = etudie_groupe(gp, 1)
+# => pas de date privilégiée...
+
+gp2 = etudie_groupe(gp, 2)
+gp3 = etudie_groupe(gp, 3)
+
+
+def _un_de_chaque(group):
+    return group['statut'].nunique() == 3
+
+# on ne garde que les cas avec échange à l'hopital
+select_gp3 = gp3.groupby(['id_intervention', 'id_vehicule']).filter(_un_de_chaque)
+# TODO: définir, la valeur
+
+
+def diff_arrivee_quitte(group):
+    arrivee = group[group['statut'] == u"Arrivée hôpital"].index[0]
+    depart = group[group['statut'] == u"Quitte hôpital"].index[0]
+    return depart - arrivee
+
+### test
+
+voir = select_gp3.groupby(['id_intervention', 'id_vehicule']).get_group((8288106, 'VSAV BSPP_1_STCL'))
+
+test = select_gp3.groupby(['id_intervention', 'id_vehicule']).apply(diff_arrivee_quitte)
+(test / np.timedelta64(1,'m')).hist()
+
+
+# regarder maintenant par zone, par type de véhicule par moment de la journée.
+
 assert len(tab_hopital) == 33302  #
-tab_hopital['Id_Intervention'].value_counts()
+tab_hopital['id_intervention'].value_counts()
 # un exemple : il y a plusieurs véhicules par intérventions
 # -> on peut suivre le véhicule et voir combien de temps il reste à l'hopital
 # une stat à améliorer ou bien il faut laisser les pomiers draguer les infirmières ?
-tab_hopital[tab_hopital['Id_Intervention'] == 8420079]
+test = tab_hopital[tab_hopital['id_intervention'] == 8420079]
