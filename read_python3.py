@@ -4,6 +4,7 @@ Created on Thu Mar 19 17:27:32 2015
 
 @author: Florian Gauthier
 """
+
 import os
 import numpy as np
 import pandas as pd
@@ -44,6 +45,7 @@ tab["motif_ini"] = tab["motif_ini"].apply(zeros_rm) #value error
     ######################
     #    Stats descr     #
     ######################
+
 # Les index pour lesquels il y a une erreur
 erreurs = tab.motif_ini != tab.motif
 tab['erreur'] = erreurs
@@ -51,9 +53,22 @@ t_count_error = tab.groupby(["motif_ini","motif"])['erreur'].sum()
 t_count_error.sort(ascending=False)
 t_count_error
 
+tab.head()
+
     ########################################
     #    Durées moyenne / intervention     #
     ########################################
+
+tab['id_intervention'].value_counts()
+tab['date'] = tab.index
+
+
+group = tab.groupby('id_intervention')
+t = group.agg({'date' : [np.min, np.max]})
+t = t.reset_index()
+t.head()
+t['duree'] = t['date']['amax'] - t['date']['amin']
+
 # Objectif : calculer la durée d'intervention moyenne par motif
 
 # Objectif : 
