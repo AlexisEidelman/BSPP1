@@ -1,0 +1,32 @@
+· Date Statut Operationnel MMA (moyen mobile d’alerte)
+o    GDH du changement de posture opérationnelle de l’engin
+
+·         Id Intervention
+o    Numéro de l’intervention auquel est lié le changement de posture opérationnelle de l’engin.
+o    Certains changements de posture ne sont pas nécessairement liés à des interventions
+
+·         Id Intervention Abrege Motif
+o    Abrégé du motif de l’intervention (raison pour laquelle l’intervention a été identifiée et saisie)
+
+·         Code Cri
+o    Codification de l’intervention constatée.
+o    Peut-être différente (chiffre des centaines qui indique les grandes catégories) du motif ayant généré l’intervention.
+
+·         Cstc
+o    Nom de la zone géographique dans laquelle de situe l’intervention
+
+·         Libelle Objet Geo
+o    Nom de la caserne dans laquelle est affecté l’engin.
+o    Lorsque le CSTC et le « Libelle Objet Geo » sont identique, c’est que l’engin est intervenu sur son secteur de compétence. Dans le cas contraire, c’est qu’il a été engagé sur un secteur voisin.
+
+·         Libelle GTA
+o    Combinaison de la classe opérationnelle de l’engin, de son numéro de sélection et de son origine
+
+·         Id Famille MMA Originelle2 Abrege Famille MMA
+o    Classe originelle de l’engin
+
+·         Abrege Famille MMA
+o    Classe opérationnelle de l’engin.
+o    Un engin prévu pour être un PSE, peut être engagé comme VSAV si son armement en homme n’est pas complet (cas des omnibus retirant une partie de la ressource homme).
+
+·         Abrege Statut Operationnel & Id Statut Operationnel Libelle Statut Operationnel : Abrégé et libellé de la posture opérationnelle de l’engin
