@@ -58,17 +58,25 @@ tab.head()
     ########################################
     #    Durées moyenne / intervention     #
     ########################################
+# Objectif : calculer la durée d'intervention moyenne par motif
 
 tab['id_intervention'].value_counts()
-tab['date'] = tab.index
+tab['date'] = tab.index #on récup la date pour simplifier les calculs
+
+group = tab.groupby('id_intervention') 
+# TODO : pourquoi ça change quand on groupby motif ? (ah j'ai compris : motif se répètent dans les interventions)
+t_duree = group.agg({'date' : [np.min, np.max]})
+t_duree = t_duree.reset_index()
+t_duree.head()
+t_duree['duree'] = t_duree['date']['amax'] - t_duree['date']['amin']
+
+(t_duree['duree'] / np.timedelta64(1,'m')).plot(legend=True)
+
+t_duree['duree'].value_counts()
+# 223 interventions à durée nulle.
+
+#TODO : 
 
 
-group = tab.groupby('id_intervention')
-t = group.agg({'date' : [np.min, np.max]})
-t = t.reset_index()
-t.head()
-t['duree'] = t['date']['amax'] - t['date']['amin']
-
-# Objectif : calculer la durée d'intervention moyenne par motif
 
 # Objectif : 
