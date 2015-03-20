@@ -37,7 +37,7 @@ def read(path=path):
 
     tab = _rename_bspp_cols(tab)
 
-    date = pd.DatetimeIndex(tab.date)
+    date = pd.to_datetime(tab.date, dayfirst=True)
     tab.set_index(date, inplace=True)
     del tab['date']
     return tab
