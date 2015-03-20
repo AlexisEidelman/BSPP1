@@ -30,7 +30,7 @@ def read(path=path):
     # recherche de variables redondantes
     tab.groupby(['Id_Intervention_Abrege_Motif', 'Code_Cri']).size()
     gp = tab.groupby(['Id_Statut_Operationnel_Libelle_Statut_Operationnel'])
-    assert all(gp['Abrege_Statut_Operationnel'].nunique() == 1)
+#    assert all(gp['Abrege_Statut_Operationnel'].nunique() == 1)
 
     # => on a une redondance, virer l'une des deux
     del tab['Abrege_Statut_Operationnel']
