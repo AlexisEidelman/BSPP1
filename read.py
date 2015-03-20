@@ -11,6 +11,7 @@ import os
 path = 'D:\data\BSPP'
 
 
+
 def _rename_bspp_cols(tab):
     tab.columns = ['date', 'id_intervention', 'motif_ini', 'motif',
                    'zone', 'zone_ini',
@@ -35,6 +36,10 @@ def read(path=path):
     del tab['Abrege_Statut_Operationnel']
 
     tab = _rename_bspp_cols(tab)
+
+    date = pd.DatetimeIndex(tab.date)
+    tab.set_index(date)
+    del tab['date']
     return tab
 
 
