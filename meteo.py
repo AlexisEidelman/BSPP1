@@ -22,6 +22,27 @@ tab.set_index(pd.DatetimeIndex(tab['DateUTC']), inplace=True)
 
 meteo = tab
 
+
+if __name__ == '__main__':
+    from transform import motif
+    import numpy as np
+    mot = motif.resample('30min', how=np.sum)
+
+    met = meteo.iloc[:,[10,12]]
+    met.columns = ['conditions', 'date']
+    met = met.drop_duplicates(subset=['date'])
+    test = mot.merge(met, left_index=True, right_index=True, how='left')
+    test['duree'] = 1
+    by_condition = test.groupby('conditions').sum()
+    duree = 100*by_condition['duree'] / by_condition['duree'].sum()
+    final = by_condition.divide(duree, axis=0)
+    final['duree'] = duree
+
+    final_see = final[final['duree'] > 5]
+    test = test[]
+
+
+
 meteo_short = meteo.iloc[:,[4,10,12]]
 meteo_short.columns = ['visibilite', 'conditions', 'date']
 meteo_short[meteo_short['visibilite']==-9999.0]
@@ -46,7 +67,7 @@ compared = pd.concat([meteo_short['visibilite_shift_av'], meteo_short['visibilit
 #                row['visibilite'] = row['visibilite_shift_ap']
 #            else:
 #                print('fuck')
-    
+
 def visibilite_change(row, row_av, row_ap, row_av2, row_ap2):
         if row == -9999.0:
             if row_av != -9999.0:
@@ -56,30 +77,31 @@ def visibilite_change(row, row_av, row_ap, row_av2, row_ap2):
             elif row_av2 != -9999.0:
                 return row_av2
             else:
-                return row_ap2             
-                
-                
+                return row_ap2
+
+
 meteo_short['visibilite'] = meteo_short.apply(lambda row: visibilite_change(row['visibilite'], row['visibilite_shift_av'], row['visibilite_shift_ap'], row['visibilite_shift_av2'], row['visibilite_shift_ap2']),
                   axis=1) #Ne fonctionne pas
 
-         
-## étude 
+
+## étude
 
 tab = read()
 
 import datetime
 def round_to_30min(t):
-    delta = datetime.timedelta(minutes=t.minute%30, 
-                               seconds=t.second, 
+    delta = datetime.timedelta(minutes=t.minute%30,
+                               seconds=t.second,
                                microseconds=t.microsecond)
     t = t - delta
     if delta > datetime.timedelta(0):
         t = t + datetime.timedelta(minutes=30)
     return t
-    
-tab['date'] = tab.index.map(round_to_30min)                     
 
-ns30min=30*60*1000000000   # 30 minutes en nano-secondes 
+
+tab['date'] = tab.index.map(round_to_30min)
+
+ns30min=30*60*1000000000   # 30 minutes en nano-secondes
 tab['date'] = pd.DatetimeIndex(((tab.index.astype(np.int64) // ns30min + 1 ) * ns30min))
 
 tab.resample('30min')
