@@ -7,6 +7,7 @@ Created on Sun Mar 22 19:40:07 2015
 
 import pandas as pd
 import os
+from read import read
 
 path = 'D:\data\BSPP\meteo.txt'
 
@@ -24,9 +25,10 @@ meteo = tab
 
 ## étude 
 
-from read import read
+
 tab = read()
 tab.resample('30min')
+
 
 # TODO: regarder si quand on a pluie, ou brouillard dans événements,
 # la structure des motifs changent
