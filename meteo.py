@@ -8,7 +8,7 @@ Created on Sun Mar 22 19:40:07 2015
 import pandas as pd
 import os
 from read import read
-
+import itertools
 path = 'D:\data\BSPP\meteo.txt'
 
 tab = pd.read_csv(path)
@@ -22,12 +22,51 @@ tab.set_index(pd.DatetimeIndex(tab['DateUTC']), inplace=True)
 
 meteo = tab
 
+meteo_short = meteo.iloc[:,[4,10,12]]
+meteo_short.columns = ['visibilite', 'conditions', 'date']
+meteo_short[meteo_short['visibilite']==-9999.0]
+meteo_short['visibilite_shift_av'] = meteo_short.visibilite.shift(1)
+meteo_short['visibilite_shift_av2'] = meteo_short.visibilite.shift(2)
+meteo_short['visibilite_shift_ap'] = meteo_short.visibilite.shift(-1)
+meteo_short['visibilite_shift_ap2'] = meteo_short.visibilite.shift(-2)
 
+compared = pd.concat([meteo_short['visibilite_shift_av'], meteo_short['visibilite']], axis=1)
+
+
+#    for index, row in meteo_short.iterrows():
+#        if row['visibilite'] == -9999.0:
+#            row['visibilite'] = row['visibilite_shift_av']
+#            if row['visibilite_shift_av'] != -9999.0:
+#                row['visibilite'] = row['visibilite_shift_av']
+#            elif row['visibilite_shift_ap'] != -9999.0:
+#                row['visibilite'] = row['visibilite_shift_ap']
+#            else:
+#                print('fuck')
+    
+def visibilite_change(row, row_av, row_ap, row_av2, row_ap2):
+        if row == -9999.0:
+            if row_av != -9999.0:
+                return row_av
+            elif row_ap != -9999.0:
+                return row_ap
+            elif row_av2 != -9999.0:
+                return row_av2
+            else:
+                return row_ap2
+                
+                
+                
+meteo_short['visibilite'] = meteo_short.apply(lambda row: visibilite_change(row['visibilite'], row['visibilite_shift_av'], row['visibilite_shift_ap'], row['visibilite_shift_av2'], row['visibilite_shift_ap2']),
+                  axis=1)
+
+visibilite_change(meteo_short)
+         
 ## étude 
 
 
 tab = read()
-tab.resample('30min')
+tab.resample('30min', how=np.first)
+
 
 
 # TODO: regarder si quand on a pluie, ou brouillard dans événements,
