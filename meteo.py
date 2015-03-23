@@ -25,6 +25,10 @@ meteo = tab
 meteo_short = meteo.iloc[:,[4,10,12]]
 meteo_short.columns = ['visibilite', 'conditions', 'date']
 meteo_short[meteo_short['visibilite']==-9999.0]
+meteo_short.conditions.value_counts()
+
+#On essaye de corriger la visibilité
+
 meteo_short['visibilite_shift_av'] = meteo_short.visibilite.shift(1)
 meteo_short['visibilite_shift_av2'] = meteo_short.visibilite.shift(2)
 meteo_short['visibilite_shift_ap'] = meteo_short.visibilite.shift(-1)
@@ -52,20 +56,33 @@ def visibilite_change(row, row_av, row_ap, row_av2, row_ap2):
             elif row_av2 != -9999.0:
                 return row_av2
             else:
-                return row_ap2
-                
+                return row_ap2             
                 
                 
 meteo_short['visibilite'] = meteo_short.apply(lambda row: visibilite_change(row['visibilite'], row['visibilite_shift_av'], row['visibilite_shift_ap'], row['visibilite_shift_av2'], row['visibilite_shift_ap2']),
-                  axis=1)
+                  axis=1) #Ne fonctionne pas
 
-visibilite_change(meteo_short)
          
 ## étude 
 
-
 tab = read()
-tab.resample('30min', how=np.first)
+
+import datetime
+def round_to_30min(t):
+    delta = datetime.timedelta(minutes=t.minute%30, 
+                               seconds=t.second, 
+                               microseconds=t.microsecond)
+    t = t - delta
+    if delta > datetime.timedelta(0):
+        t = t + datetime.timedelta(minutes=30)
+    return t
+    
+tab['date'] = tab.index.map(round_to_30min)                     
+
+ns30min=30*60*1000000000   # 30 minutes en nano-secondes 
+tab['date'] = pd.DatetimeIndex(((tab.index.astype(np.int64) // ns30min + 1 ) * ns30min))
+
+tab.resample('30min')
 
 
 
