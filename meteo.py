@@ -80,7 +80,7 @@ def round_to_30min(t):
 tab['date'] = tab.index.map(round_to_30min)                     
 
 ns30min=30*60*1000000000   # 30 minutes en nano-secondes 
-tab['date'] = pd.DatetimeIndex(((tab.index.astype(np.int64) // ns30min + 1 ) * ns30min))
+tab['date'] = pd.DatetimeIndex(((tab.index.astype(np.int64) // ns30min +1) * ns30min))
 
 tab.resample('30min')
 
