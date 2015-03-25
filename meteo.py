@@ -78,7 +78,27 @@ def visibilite_change(row, row_av, row_ap, row_av2, row_ap2):
                 return row_av2
             else:
                 return row_ap2
+        else:
+            return row
 
+meteo_short.loc[meteo_short.visibilite== -9999, 'visibilite'] = \
+    meteo_short.loc[meteo_short.visibilite== -9999, 'visibilite_shift_av']
+
+meteo_short.loc[meteo_short.visibilite== -9999, 'visibilite'] = \
+    meteo_short.loc[meteo_short.visibilite== -9999, 'visibilite_shift_ap']
+    
+assert all(meteo_short.visibilite != -9999)
+
+tab = meteo_short
+tab.replace(-9999.0, np.nan)
+tab.fillna(how='bfill', axis=0)
+
+row_1 = row[0]
+assert row[0] != -9999
+for row in row['visibilite']:
+    if row == -9999:
+        row = row_1
+    row_1 = row
 
 meteo_short['visibilite'] = meteo_short.apply(lambda row: visibilite_change(row['visibilite'], row['visibilite_shift_av'], row['visibilite_shift_ap'], row['visibilite_shift_av2'], row['visibilite_shift_ap2']),
                   axis=1) #Ne fonctionne pas
