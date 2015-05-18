@@ -71,8 +71,6 @@ t_duree.columns = ['id_intervention','duree']
 t_duree['duree'].value_counts()
 # 223 interventions à durée nulle.
 
- ### jusqu'ici tout est OK niveau durée.
-
 #Table : intervention <-> motif 
 gp_id = tab.groupby(['id_intervention','motif']).first().reset_index()
 t_id_motif = gp_id.iloc[:,0:2]
