@@ -4,13 +4,13 @@ Created on Fri Mar 20 23:41:51 2015
 
 @author: alexis
 
-Transforme les donneés, en séparant les infos propres à 
-l'ntervention, celles propres aux véhicules et celles qui 
+Transforme les donneés, en séparant les infos propres à
+l'ntervention, celles propres aux véhicules et celles qui
 décrivent le déroulé de l'intrevention
 
 on travaille ensuite avec le début de l'intervention
 
-Ensuite, un exemple sur les motifs, donne la répartition des 
+Ensuite, un exemple sur les motifs, donne la répartition des
 interventions, par heures, à ce niveau là, on a une colonne
 par type d'intervention.
 """
@@ -20,20 +20,10 @@ import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 
-from read import read
+from read_bspp import read
 
 tab = read()
 
-## crée une table avec la définition des intervention
-id = ['id_intervention']
-def_interevention = ['zone', 'motif_ini', 'motif']
-intervention = tab[id + def_interevention]
-grouped = intervention.groupby(id)
-assert all(grouped.agg(lambda x: len(np.unique(x))) == 1)
-intervention = grouped.first()
-
-tab.drop(def_interevention, axis=1, inplace=True)
-# => 41909 interventions
 
 ## crée une table avec la définition des véhicule
 id = ['id_vehicule']
@@ -46,18 +36,6 @@ vehicule = grouped.first()
 tab.drop(def_vehicule, axis=1, inplace=True)
 # => 1031 véhicules
 
-
-# début de l'intervention
-tab['date'] = tab.index
-debut = tab.groupby(['id_intervention'])['date'].min()
-debut = pd.DataFrame(debut)
-debut.reset_index(inplace=True)
-debut.set_index(pd.DatetimeIndex(debut['date']), inplace=True)
-del debut['date']
-
-
-# transforme les dates en tranche de dix
-deb = debut.merge(intervention, left_on='id_intervention', right_index=True)
 
 # on retire le premier janvier mais on pourrait ne pas le faire
 deb = deb['2015-01-02':]
@@ -74,7 +52,7 @@ def reshape(var, limite):
     zone = zone[to_keep]
     zone = 100*zone/zone.sum()
     return zone
-    
+
 zone = reshape('zone', 100)
 zone.resample('1D', how=np.sum).iloc[:, :10].plot()
 
@@ -90,7 +68,7 @@ motif_by_hour.plot()
 #
 #
 #def print_el_in_group(group):
-#    for name, values in group.groups.iteritems():        
+#    for name, values in group.groups.iteritems():
 #        size = len(values)
 #        label = 'groupe ' + str(name) + ', taille ' + str(size)
 #        if size > 5:
@@ -109,7 +87,7 @@ motif_by_hour.plot()
 ## TODO: pivot table
 #xx
 ##def select_categ(zone=None, motif_ini=None, motif=None):
-##    
+##
 #
 #test.groupby([pd.Grouper(freq='10')]).mean()
 #

@@ -43,6 +43,44 @@ def read(path=path):
     return tab
 
 
+## crée une table avec la définition des intervention
+def intervention_table(tab):
+    # => 41909 interventions
+    id = ['id_intervention']
+    def_interevention = ['zone', 'motif_ini', 'motif']
+    intervention = tab[id + def_interevention]
+    intervention['date'] = tab.index
+    grouped = intervention.groupby(id)
+    for var in def_interevention:
+        assert all(grouped[var].nunique(dropna=False) == 1)
+    intervention = grouped.first()
+    intervention.drop('date', axis=1, inplace=True)
+
+    debut = grouped['date'].min()
+    fin = grouped['date'].max()
+
+    for el in ['debut', 'fin']:
+        el_tab = eval(el)
+        el_tab = pd.DataFrame(el_tab)
+        el_tab.columns = [el]
+        intervention = intervention.join(el_tab)
+
+    # véhicule par intervention
+    vehicule = tab[['id_intervention', 'id_vehicule', 'type_ini', 'type']]
+    vehicule.drop_duplicates(['id_intervention', 'id_vehicule'], inplace=True)
+    vehicule = pd.crosstab(vehicule.id_intervention, vehicule.type)
+    intervention = intervention.join(vehicule)
+    return intervention
+
+
+
+# passage possible d'un type de véhicule à un autre
+# tab.groupby(['type','type_ini']).size()
+modif_type = tab.loc[tab.type != tab.type_ini, ['type_ini', 'type']]
+modif_type.drop_duplicates()
+
+
+
 if __name__ == '__main__':
 
     tab = read(path)
