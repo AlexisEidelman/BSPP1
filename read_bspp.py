@@ -11,7 +11,6 @@ import os
 path = 'D:\data\BSPP'
 
 
-
 def _rename_bspp_cols(tab):
     tab.columns = ['date', 'id_intervention', 'motif_ini', 'motif',
                    'zone', 'zone_ini',
@@ -28,8 +27,8 @@ def read(path=path):
     tab[u'Id_Statut_Operationnel_Libelle_Statut_Operationnel'].value_counts()
 
     # recherche de variables redondantes
-    tab.groupby(['Id_Intervention_Abrege_Motif', 'Code_Cri']).size()
-    gp = tab.groupby(['Id_Statut_Operationnel_Libelle_Statut_Operationnel'])
+#    tab.groupby(['Id_Intervention_Abrege_Motif', 'Code_Cri']).size()
+#    gp = tab.groupby(['Id_Statut_Operationnel_Libelle_Statut_Operationnel'])
 #    assert all(gp['Abrege_Statut_Operationnel'].nunique() == 1)
 
     # => on a une redondance, virer l'une des deux
@@ -50,44 +49,50 @@ def intervention_table(tab):
     def_interevention = ['zone', 'motif_ini', 'motif']
     intervention = tab[id + def_interevention]
     intervention['date'] = tab.index
-    grouped = intervention.groupby(id)
-    for var in def_interevention:
-        assert all(grouped[var].nunique(dropna=False) == 1)
-    intervention = grouped.first()
-    intervention.drop('date', axis=1, inplace=True)
 
-    debut = grouped['date'].min()
-    fin = grouped['date'].max()
+    assert max(tab.index.values[:-1] - tab.index.values[1:]) <= 0
+    debut = tab.drop_duplicates('id_intervention', take_last=False)
+    fin = tab.drop_duplicates('id_intervention', take_last=True)
+    intervention = debut.merge(fin, on='id_intervention',
+                               suffixes=('', '_fin'))
+    return intervention
+#    # ancienne version via groupby
+#    grouped = intervention.groupby(id)
+#    for var in def_interevention:
+#        assert all(grouped[var].nunique(dropna=False) == 1)
+#    intervention = grouped.first()
+#    intervention.drop('date', axis=1, inplace=True)
+#    debut = grouped['date'].min()
+#    fin = grouped['date'].max()
+#
+#    for el in ['debut', 'fin']:
+#        el_tab = eval(el)
+#        el_tab = pd.DataFrame(el_tab)
+#        el_tab.columns = [el]
+#        intervention = intervention.join(el_tab)
 
-    for el in ['debut', 'fin']:
-        el_tab = eval(el)
-        el_tab = pd.DataFrame(el_tab)
-        el_tab.columns = [el]
-        intervention = intervention.join(el_tab)
 
+def vehicule_by_intervention(tab):
     # véhicule par intervention
-    vehicule = tab.loc[['id_intervention', 'id_vehicule', 'type_ini', 'type']]
+    vehicule = tab.loc[:, ['id_intervention', 'id_vehicule', 'type_ini', 'type']]
     vehicule.drop_duplicates(['id_intervention', 'id_vehicule'], inplace=True)
     vehicule = pd.crosstab(vehicule.id_intervention, vehicule.type)
-    intervention = intervention.join(vehicule)
-    return intervention
+    return vehicule
 
 
 def vehicule_table(tab):
     # => 41909 interventions
     id = ['id_vehicule']
     def_vehicule = ['zone_ini']
-    
+
     vehicule = tab[id + def_vehicule]
     vehicule['date'] = tab.index
     grouped = vehicule.groupby(id)
     for var in def_vehicule:
         assert all(grouped[var].nunique(dropna=False) == 1)
     vehicule = grouped.first()
-    vehicule.drop('date', axis=1, inplace=True) 
-
-
-
+    vehicule.drop('date', axis=1, inplace=True)
+    return vehicule
 
 
 if __name__ == '__main__':
@@ -100,7 +105,6 @@ if __name__ == '__main__':
     modif_type = tab.loc[tab.type != tab.type_ini, ['type_ini', 'type']]
     modif_type.drop_duplicates()
 
-    
     tab['zone_ini_reconstitute'] = tab.id_vehicule.str.split('_').str[2]
     tab.groupby(['zone_ini', 'zone_ini_reconstitute']).size()
     test = tab['zone_ini_reconstitute'] != tab['zone_ini']
