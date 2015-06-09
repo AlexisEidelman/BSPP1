@@ -47,14 +47,15 @@ def intervention_table(tab):
     # => 41909 interventions
     id = ['id_intervention']
     def_interevention = ['zone', 'motif_ini', 'motif']
-    intervention = tab[id + def_interevention]
-    intervention['date'] = tab.index
+    sub_tab = tab[id + def_interevention]
+    sub_tab['date'] = tab.index
 
     assert max(tab.index.values[:-1] - tab.index.values[1:]) <= 0
-    debut = tab.drop_duplicates('id_intervention', take_last=False)
-    fin = tab.drop_duplicates('id_intervention', take_last=True)
+    debut = sub_tab.drop_duplicates('id_intervention', take_last=False)
+    fin = sub_tab.drop_duplicates('id_intervention', take_last=True)
     intervention = debut.merge(fin, on='id_intervention',
                                suffixes=('', '_fin'))
+    intervention.set_index('id_intervention', inplace=True, drop=True)
     return intervention
 #    # ancienne version via groupby
 #    grouped = intervention.groupby(id)
