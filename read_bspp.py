@@ -66,18 +66,27 @@ def intervention_table(tab):
         intervention = intervention.join(el_tab)
 
     # véhicule par intervention
-    vehicule = tab[['id_intervention', 'id_vehicule', 'type_ini', 'type']]
+    vehicule = tab.loc[['id_intervention', 'id_vehicule', 'type_ini', 'type']]
     vehicule.drop_duplicates(['id_intervention', 'id_vehicule'], inplace=True)
     vehicule = pd.crosstab(vehicule.id_intervention, vehicule.type)
     intervention = intervention.join(vehicule)
     return intervention
 
 
+def vehicule_table(tab):
+    # => 41909 interventions
+    id = ['id_vehicule']
+    def_vehicule = ['zone_ini']
+    
+    vehicule = tab[id + def_vehicule]
+    vehicule['date'] = tab.index
+    grouped = vehicule.groupby(id)
+    for var in def_vehicule:
+        assert all(grouped[var].nunique(dropna=False) == 1)
+    vehicule = grouped.first()
+    vehicule.drop('date', axis=1, inplace=True) 
 
-# passage possible d'un type de véhicule à un autre
-# tab.groupby(['type','type_ini']).size()
-modif_type = tab.loc[tab.type != tab.type_ini, ['type_ini', 'type']]
-modif_type.drop_duplicates()
+
 
 
 
@@ -85,6 +94,20 @@ if __name__ == '__main__':
 
     tab = read(path)
     ## sujet: brainstorm
+    inter = intervention_table(tab)
+    # passage possible d'un type de véhicule à un autre
+    # tab.groupby(['type','type_ini']).size()
+    modif_type = tab.loc[tab.type != tab.type_ini, ['type_ini', 'type']]
+    modif_type.drop_duplicates()
+
+    
+    tab['zone_ini_reconstitute'] = tab.id_vehicule.str.split('_').str[2]
+    tab.groupby(['zone_ini', 'zone_ini_reconstitute']).size()
+    test = tab['zone_ini_reconstitute'] != tab['zone_ini']
+
+    # on regarde si un motif d'intervention a toujours le même véhicule appelé
+
+
 
     # étudier les différences entre 'Id_Intervention_Abrege_Motif' et 'cri'
     # ce qui est établi et ce qui est constaté
