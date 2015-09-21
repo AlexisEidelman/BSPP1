@@ -29,7 +29,7 @@ statut = read('Statuts Engins')
 engin = read('Engin')
 
 ### séléction de victimes dans l'hpital qui va bien
-victimes['Nom Établissement'].value_counts()
+victimes[u'Nom Établissement'].value_counts()
 ## recode le nom établissement
 victimes['hopital'] = ''
 
@@ -41,35 +41,45 @@ traduction_hopital = dict(
     )
 
 for nom, nom_init in traduction_hopital.iteritems():
-    victimes.loc[victimes['Nom Établissement'] == nom_init, 'hopital'] = nom
+    victimes.loc[victimes[u'Nom Établissement'] == nom_init, 'hopital'] = nom
 
 bspp = victimes[victimes['hopital'] != '']
 
 ### merge avec statut arrivée hopital
-arrivee_hop = statut['Id Statut Operationnel Libelle Statut Operationnel'] == 'Arrivée hôpital'
+arrivee_hop = statut[u'Id Statut Operationnel Libelle Statut Operationnel'] == u'Arrivée hôpital'
 statut = statut[arrivee_hop]
-test = bspp.merge(statut, how='left', right_on='Id Intervention',
-                  left_on='ID202 Numéro Intervention')
+test = bspp.merge(statut, how='left', right_on=u'Id Intervention',
+                  left_on=u'ID202 Numéro Intervention')
 ## il n'y a pas toujours l'arrivée à l'hopital de renseigner, on tente un truc plus général
 # et on se servira de l'info si nécessaire plus tard
 bspp = bspp.merge(engin, how='left')
 
 
 ###### MATCHING PROPREMENT DIT #####
-
+list_var_bspp = [u'ID255 Numéro de victime', 'age',
+                 ]
 ## on travaille par hopital
-bspp_APR = bspp[bspp['hopital'] == 'APR']
+bspp_APR = bspp.loc[bspp['hopital'] == 'APR', [u'ID202 Numéro Intervention',]]
 aphp_APR = aphp[aphp['SITE'] == 'APR']
+
+## le premier match c'est quand on a une date de présentation hopital
+bspp_APR[u'Engins 538 Présentation Hopital']
+
 
 # on cherche sur les caractéristiques des patients/victimes
 aphp_APR[['age', u'CODE_POSTAL']]
-bspp_APR[['Age numérique ', 'ID259 Identification']]
+bspp_APR[[u'Age numérique ', 'ID259 Identification']]
 ## pour l'instant, on n'a que l'age
-bspp_APR.rename(columns={'Age numérique ':'age'}, inplace=True)
+bspp_APR.rename(columns={u'Age numérique ':'age'}, inplace=True)
 
 # on coupe par jour
+bspp_APR_jour = bspp_APR[bspp_APR[u'ID247 Disponible'].str[:10] == '01/08/2014']
+aphp_APR_jour = aphp_APR[aphp_APR['DATE_ENTREE'].str[:10] == '2014-08-01']
 
+
+bspp_APR_jour[['age', u'ID247 Disponible']]
+aphp_APR_jour[['age', 'DATE_ENTREE']]
 # on regarde quand il y a présentation à l'hopital
-presentation_pompiers_hopital = bspp_APR['Engins 538 Présentation Hopital']
+presentation_pompiers_hopital = bspp_APR[u'Engins 538 Présentation Hopital']
 
 
