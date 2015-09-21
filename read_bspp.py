@@ -49,7 +49,7 @@ def intervention_table(tab):
     def_interevention = ['zone', 'motif_ini', 'motif']
     sub_tab = tab[id + def_interevention]
     sub_tab['date'] = tab.index
-
+    # verifie que la table est ordonnée par date
     assert max(tab.index.values[:-1] - tab.index.values[1:]) <= 0
     debut = sub_tab.drop_duplicates('id_intervention', take_last=False)
     fin = sub_tab.drop_duplicates('id_intervention', take_last=True)
