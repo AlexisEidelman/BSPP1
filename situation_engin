@@ -46,7 +46,7 @@ qui ne possedent pas de brigade """
 
 
 
-# je regarde les immatriculation (qui ne sont pas les vraies dans ce fichier)
+# je regarde les immatriculations (qui ne sont pas les vraies dans ce fichier)
 
 len(tab.Immatriculation.unique())
 tab.head(20)
