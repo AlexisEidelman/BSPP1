@@ -47,12 +47,11 @@ qui ne possedent pas de brigade """
 
 
 # je regarde les immatriculations (qui ne sont pas les vraies dans ce fichier)
-
 len(tab.Immatriculation.unique())
 tab.head(20)
 
 
-# fonction pour la premiere table : dans quel etat sont chaque engin a une date et heure donnée
+# fonction pour la premiere table : dans quel etat est chaque engin a une date et heure donnée
 # Le resultat est un dictionnaire qui donne la situation operationnelle de chaque engin
 def situation_engin(year, month, day, hour, minute, second):
     tryd = datetime.datetime(year, month, day, hour, minute, second)
@@ -75,20 +74,3 @@ resu=situation_engin(year, month, day, hour, minute, second)
 
 
 
-
-# morceau à ne pas lire
-
-
-
-list(tab.columns.values)
-tab.groupby(['lieu_intervention'])['lieu_initial'].nunique()
-# separation de la date et de l'heure
-# tab['date'] = tab['\ufeffDate_Statut_Operationnel_\
-#    MMA'].str.split(pat=" ", expand=True)[0]
-# tab['heure'] = tab['\ufeffDate_Statut_Operationnel_\
-#    MMA'].str.split(pat=" ", expand=True)[1]
-# tab.drop(['\ufeffDate_Statut_Operationnel_MMA'], inplace=True, axis=1)
-
-# from datetime import datetime
-# datedata = tab['\ufeffDate_Statut_Operationnel_\
-#    MMA'].str.split(pat=" ", expand=True)
