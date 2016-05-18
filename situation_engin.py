@@ -34,7 +34,7 @@ Counter(tab['lieu_initial'])
 tab.lieu_initial.nunique()
 tab.lieu_intervention.nunique()
 
-# use lise
+
 lieux_intervention = tab.lieu_intervention.unique().tolist()
 lieux_initiaux = tab.lieu_initial.unique().tolist()
 
@@ -57,10 +57,12 @@ tab.head(20)
 def situation_engin(year, month, day, hour, minute, second):
     tryd = datetime.datetime(year, month, day, hour, minute, second)
     i = bisect.bisect_right(tab['date_time'], tryd)
-    engin = tab['Immatriculation'].unique()
+    liste_engins = tab['Immatriculation'].unique()
     situation = dict()
-    for j in engin:
-        situation[j] = tab[0:i][tab['Immatriculation'] == j]['Abrege_Statut_Operationnel'].tail(1)
+    tab_avant_date = tab[0:i]# note : doing that operation before looping save time since it's not
+    # dependant of engine
+    for engin in liste_engins:
+        situation[engin] = tab_avant_date.loc[tab['Immatriculation'] == engin,'Abrege_Statut_Operationnel'].tail(1)
     return situation
 
 # Test
@@ -70,4 +72,4 @@ day = 2
 hour = 14
 minute = 23
 second = 45
-resu=situation_engin(year, month, day, hour, minute, second)
+resu = situation_engin(year, month, day, hour, minute, second)
