@@ -10,8 +10,7 @@ import bisect
 import datetime
 # import os
 # import itertools
-path = '/Users/carrierclement/Documents/Etalab/BSPP/2015-043-\
-Extraction LCL PAGNIEZ.csv'
+path = u'/home/sgmap/data/BSPP/Extraction LCL PAGNIEZ.csv'
 
 tab = pd.read_csv(path, sep=',')
 
@@ -35,11 +34,13 @@ Counter(tab['lieu_initial'])
 tab.lieu_initial.nunique()
 tab.lieu_intervention.nunique()
 
-for i in tab.lieu_intervention.unique():
-    if i in tab.lieu_initial.unique():
-        print
-    else:
-        print(i)
+# use lise
+lieux_intervention = tab.lieu_intervention.unique().tolist()
+lieux_initiaux = tab.lieu_initial.unique().tolist()
+
+lieu_intervention_not_in_lieu_initial = [x for x in lieux_intervention
+    if x not in lieux_initiaux]
+print(lieu_intervention_not_in_lieu_initial)
 
 """ CCT CDS2 POUC CASJ CASS nan EMGAS sont les lieux d'interventions
 qui ne possedent pas de brigade """
