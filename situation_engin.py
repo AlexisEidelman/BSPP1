@@ -32,8 +32,8 @@ tab['date_time'] = pd.to_datetime(tab['date_time']
 #je regarde quels sont les lieux d'intervention
 from collections import Counter
 Counter(tab['lieu_initial'])
-len(tab.lieu_initial.unique())
-len(tab.lieu_intervention.unique())
+tab.lieu_initial.nunique()
+tab.lieu_intervention.nunique()
 
 for i in tab.lieu_intervention.unique():
     if i in tab.lieu_initial.unique():
@@ -41,7 +41,7 @@ for i in tab.lieu_intervention.unique():
     else:
         print(i)
 
-""" CCT CDS2 POUC CASJ CASS nan EMGAS sont les lieux d'interventions 
+""" CCT CDS2 POUC CASJ CASS nan EMGAS sont les lieux d'interventions
 qui ne possedent pas de brigade """
 
 
@@ -70,7 +70,3 @@ hour = 14
 minute = 23
 second = 45
 resu=situation_engin(year, month, day, hour, minute, second)
-
-
-
-
