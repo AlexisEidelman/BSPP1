@@ -37,10 +37,12 @@ def situation_engin(year, month, day, hour, minute, second):
     statut_engin = dict((key, []) for key in liste_engins)
     tab_avant_date = tab[0:i]
     for engin in liste_engins:
-        if isinstance(engin, str):
-            a = list(tab_avant_date[tab['Immatriculation'] == engin]['Abrege_Statut_Operationnel'])
-            if a != []:
-                statut_engin[engin] = a[-1]
+        if engin == str('nan'):
+            next
+        a = list(tab_avant_date.loc[tab['Immatriculation'] == engin, 'Abrege_Statut_Operationnel'])
+        # assert isinstance(engin, str)
+        if a != []:
+            statut_engin[engin] = a[-1]
     return statut_engin
 
 
@@ -60,27 +62,20 @@ resu = situation_engin(year, month, day, hour, minute, second)
 # Nouvelle fonction permettant d'obtenir en output 1 : le statut de chaque engin
 # en output 2 : le statut des engins de chaque caserne
 # en output 3 : le nombre d'engin disponible pour chaque caserne
-def engin_caserne(year, month, day, hour, minute, second):
-    tryd = datetime.datetime(year, month, day, hour, minute, second)
-    i = bisect.bisect_right(tab['date_time'], tryd)
+def engin_caserne(year, month, day, hour, minute, second,statut_demande):
+    ''' utilise la fonction precedente et renvoie le nombre de vehicule en statut_demande  '''
     liste_engins = tab['Immatriculation'].unique()
     liste_lieu = (tab['Immatriculation'].str.split(pat="_", expand=True))[2].unique()
-    statut_engin = dict((key, []) for key in liste_engins)
     caserne_engin_statut = dict((key, []) for key in liste_lieu)
     caserne_engin_dispo = dict((key, []) for key in liste_lieu)
-    tab_avant_date = tab[0:i]
-    for engin in liste_engins:
-        if isinstance(engin, str):
-            a = list(tab_avant_date[tab['Immatriculation'] == engin]['Abrege_Statut_Operationnel'])
-            if a != []:
-                statut_engin[engin] = a[-1]
+    statut_engin = situation_engin(year, month, day, hour, minute, second)
+               
     for lieu in liste_lieu:
         for engin in liste_engins:
             if (isinstance(engin, str) and isinstance(lieu, str) and (lieu in engin)):
                 caserne_engin_statut[lieu].append(statut_engin[engin])
-        caserne_engin_dispo[lieu] = caserne_engin_statut[lieu].count('D') 
+        caserne_engin_dispo[lieu] = caserne_engin_statut[lieu].count(statut_demande) 
     return statut_engin, caserne_engin_statut, caserne_engin_dispo
-
 # Test
 try_ = engin_caserne(year, month, day, hour, minute, second)
 
