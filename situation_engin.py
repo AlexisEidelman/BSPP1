@@ -86,6 +86,34 @@ try_ = engin_caserne(year, month, day, hour, minute, second)
 # identifier la vraie appartenance de chaque engin à chaque caserne
 
 
+
+
+
+
+# Nouvelle fonction permettant de calculer directement la mateice. 
+def situation_engin_bis():
+    liste_engins = tab['Immatriculation'].unique()
+    print('done')
+    liste_date_intervention = tab.index
+    # J'initialise le statut des engins comme étant occupé
+    statut_engin = dict((key, ['O']) for key in liste_engins)
+    for date in liste_date_intervention:
+        veh = tab[tab.index == date]
+        eng = veh['Immatriculation'][-1]
+        val = veh['Abrege_Statut_Operationnel'][-1]
+        for key, values in statut_engin.items():
+            if key == eng:
+                values.append(val)
+            else:
+                values.append(values[-1])    
+    return(statut_engin)
+matrice = situation_engin_bis() 
+
+
+
+
+
+
 #### Autres commentaires et essais ####
 
 #je regarde quels sont les lieux d'intervention
