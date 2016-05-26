@@ -52,10 +52,16 @@ month = 1
 day = 22
 hour = 14
 minute = 23
-second = 45
+second = 46
 exemple_date = datetime.datetime(year, month, day, hour, minute, second)
 resu = situation_engin(exemple_date)
 
+
+
+## pandas time serie option
+tab.set_index('date_time', inplace=True)
+tab_before = tab[:exemple_date]
+tab.groupby('Immatriculation').last()
 
 
 
@@ -63,7 +69,7 @@ resu = situation_engin(exemple_date)
 # Nouvelle fonction permettant d'obtenir en output 1 : le statut de chaque engin
 # en output 2 : le statut des engins de chaque caserne
 # en output 3 : le nombre d'engin disponible pour chaque caserne
-def engin_caserne(date ,statut_demande):
+def engin_caserne(date, statut_demande):
     ''' utilise la fonction precedente et renvoie le nombre de vehicule en statut_demande  '''
     liste_engins = tab['Immatriculation'].unique()
     liste_lieu = (tab['Immatriculation'].str.split(pat="_", expand=True))[2].unique()
@@ -78,7 +84,7 @@ def engin_caserne(date ,statut_demande):
         caserne_engin_dispo[lieu] = caserne_engin_statut[lieu].count(statut_demande) 
     return statut_engin, caserne_engin_statut, caserne_engin_dispo
 # Test
-try_ = engin_caserne(exemple_date)
+try_ = engin_caserne(exemple_date, 'R')
 
 
 
