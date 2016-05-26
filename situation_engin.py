@@ -30,9 +30,9 @@ tab['date_time'] = pd.to_datetime(tab['date_time']
 
 # fonction pour la premiere table : dans quel etat est chaque engin a une date et heure donnée
 # Le resultat est un dictionnaire qui donne la situation operationnelle de chaque engin
-def situation_engin(year, month, day, hour, minute, second):
-    tryd = datetime.datetime(year, month, day, hour, minute, second)
-    i = bisect.bisect_right(tab['date_time'], tryd)
+def situation_engin(date):
+    assert isinstance(date, datetime.datetime)
+    i = bisect.bisect_right(tab['date_time'], date)
     liste_engins = tab['Immatriculation'].unique()
     statut_engin = dict((key, []) for key in liste_engins)
     tab_avant_date = tab[0:i]
@@ -53,7 +53,8 @@ day = 22
 hour = 14
 minute = 23
 second = 45
-resu = situation_engin(year, month, day, hour, minute, second)
+exemple_date = datetime.datetime(year, month, day, hour, minute, second)
+resu = situation_engin(exemple_date)
 
 
 
@@ -62,13 +63,13 @@ resu = situation_engin(year, month, day, hour, minute, second)
 # Nouvelle fonction permettant d'obtenir en output 1 : le statut de chaque engin
 # en output 2 : le statut des engins de chaque caserne
 # en output 3 : le nombre d'engin disponible pour chaque caserne
-def engin_caserne(year, month, day, hour, minute, second,statut_demande):
+def engin_caserne(date ,statut_demande):
     ''' utilise la fonction precedente et renvoie le nombre de vehicule en statut_demande  '''
     liste_engins = tab['Immatriculation'].unique()
     liste_lieu = (tab['Immatriculation'].str.split(pat="_", expand=True))[2].unique()
     caserne_engin_statut = dict((key, []) for key in liste_lieu)
     caserne_engin_dispo = dict((key, []) for key in liste_lieu)
-    statut_engin = situation_engin(year, month, day, hour, minute, second)
+    statut_engin = situation_engin(date)
                
     for lieu in liste_lieu:
         for engin in liste_engins:
@@ -77,7 +78,7 @@ def engin_caserne(year, month, day, hour, minute, second,statut_demande):
         caserne_engin_dispo[lieu] = caserne_engin_statut[lieu].count(statut_demande) 
     return statut_engin, caserne_engin_statut, caserne_engin_dispo
 # Test
-try_ = engin_caserne(year, month, day, hour, minute, second)
+try_ = engin_caserne(exemple_date)
 
 
 
