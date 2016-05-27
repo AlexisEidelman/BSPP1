@@ -73,7 +73,9 @@ tab_travail.sort_index(inplace=True)
 
 tab_before = tab_travail[:debut]
 etat_initial = tab_before.groupby('Immatriculation').last()
-
+manquant = list(set(tab.Immatriculation.unique()) - set(etat_initial.index.unique()))
+manquant = pd.DataFrame({'Abrege_Statut_Operationnel': ['initial'] * len(manquant)}, index=manquant)
+etat_initial = pd.concat([etat_initial, manquant])
 
 etat_initial['date_time'] = debut
 etat_initial.reset_index(inplace=True)
