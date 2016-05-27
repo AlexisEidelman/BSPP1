@@ -5,6 +5,7 @@ Created on Fri May 13 18:35:35 2016
 @author: carrierclement
 """
 
+import numpy as np
 import pandas as pd
 import bisect
 import datetime
@@ -30,20 +31,20 @@ tab['date_time'] = pd.to_datetime(tab['date_time']
 
 # fonction pour la premiere table : dans quel etat est chaque engin a une date et heure donnée
 # Le resultat est un dictionnaire qui donne la situation operationnelle de chaque engin
-def situation_engin(date):
-    assert isinstance(date, datetime.datetime)
-    i = bisect.bisect_right(tab['date_time'], date)
-    liste_engins = tab['Immatriculation'].unique()
-    statut_engin = dict((key, []) for key in liste_engins)
-    tab_avant_date = tab[0:i]
-    for engin in liste_engins:
-        if engin == str('nan'):
-            next
-        a = list(tab_avant_date.loc[tab['Immatriculation'] == engin, 'Abrege_Statut_Operationnel'])
-        # assert isinstance(engin, str)
-        if a != []:
-            statut_engin[engin] = a[-1]
-    return statut_engin
+#def situation_engin(date):
+#    assert isinstance(date, datetime.datetime)
+#    i = bisect.bisect_right(tab['date_time'], date)
+#    liste_engins = tab['Immatriculation'].unique()
+#    statut_engin = dict((key, []) for key in liste_engins)
+#    tab_avant_date = tab[0:i]
+#    for engin in liste_engins:
+#        if engin == str('nan'):
+#            next
+#        a = list(tab_avant_date.loc[tab['Immatriculation'] == engin, 'Abrege_Statut_Operationnel'])
+#        # assert isinstance(engin, str)
+#        if a != []:
+#            statut_engin[engin] = a[-1]
+#    return statut_engin
 
 
 # Test
@@ -54,17 +55,59 @@ hour = 14
 minute = 23
 second = 46
 exemple_date = datetime.datetime(year, month, day, hour, minute, second)
-resu = situation_engin(exemple_date)
+#resu = situation_engin(exemple_date)
 
-
+debut = exemple_date
+fin = datetime.datetime(year, month, day + 3,
+                        hour, minute, second)
 
 ## pandas time serie option
 tab.set_index('date_time', inplace=True)
-tab_before = tab[:exemple_date]
-tab.groupby('Immatriculation').last()
+grp = tab.groupby('Immatriculation')
+
+#def _find_init(tab, debut, fin):
+#    '''renvoie la liste des situations entre deux dates '''
+tab_travail = tab[['Immatriculation', 
+                  'Abrege_Statut_Operationnel']].copy()
+tab_travail.sort_index(inplace=True)
+
+tab_before = tab_travail[:debut]
+etat_initial = tab_before.groupby('Immatriculation').last()
 
 
+etat_initial['date_time'] = debut
+etat_initial.reset_index(inplace=True)
+etat_initial.set_index('date_time', inplace=True)
+# TODO: add immatriculation with no event before debut
 
+tab_periode = tab_travail[debut:fin]
+tab_periode = tab_periode.append(etat_initial)
+
+tab_periode['etat'] = tab_periode['Abrege_Statut_Operationnel'] == 'R'
+
+
+# les stats que l'on veut
+# nombre de fois que le status est pris
+tab_periode.groupby('Immatriculation')['etat'].sum()
+
+# temps moyen où le véhicule est dans l'état
+# TODO: rolling mean in pandas
+def time_mean(group):
+    import pdb; pdb.set_trace()
+    group.sort_index(inplace=True)
+    index = pd.Series(group.index)
+    group['duree']
+    group['duree'] = (index.shift(-1) - index).values
+    group['duree'][-1] = fin - index.iloc[-1]
+    try:
+        assert group['duree'].sum() == fin - debut
+    except:
+        import pdb; pdb.set_trace()
+    group['duree'] = group['duree'] / np.timedelta64(1,'s')
+    return np.average(group.etat, weights=group.duree)
+
+print(tab_periode.groupby('Immatriculation').transform(time_mean))
+xxx
 
 # Nouvelle fonction permettant d'obtenir en output 1 : le statut de chaque engin
 # en output 2 : le statut des engins de chaque caserne
