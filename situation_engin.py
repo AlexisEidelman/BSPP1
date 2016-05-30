@@ -95,10 +95,9 @@ tab_periode.groupby('Immatriculation')['etat'].sum()
 # temps moyen où le véhicule est dans l'état
 # TODO: rolling mean in pandas
 def time_mean(group):
-    import pdb; pdb.set_trace()
-    group.sort_index(inplace=True)
-    index = pd.Series(group.index)
-    group['duree']
+    if len(group) == 1:
+        return group['etat']
+    index = pd.Series(group.index)    
     group['duree'] = (index.shift(-1) - index).values
     group['duree'][-1] = fin - index.iloc[-1]
     try:
@@ -106,10 +105,26 @@ def time_mean(group):
     except:
         import pdb; pdb.set_trace()
     group['duree'] = group['duree'] / np.timedelta64(1,'s')
-    return np.average(group.etat, weights=group.duree)
+#    print(len(group))
+    return np.average(group['etat'], weights=group['duree'])
 
-print(tab_periode.groupby('Immatriculation').transform(time_mean))
-xxx
+tab_periode.sort_index(inplace=True)
+#print(tab_periode.groupby('Immatriculation').apply(time_mean))
+
+step = datetime.timedelta(1/24) # in hour
+
+debut_file = tab_periode.index.min().to_datetime()
+fin_file = tab_periode.index.max().round('H').to_datetime()
+
+date = debut_file
+dico_dates = {}
+while (date <= fin_file):
+    debut = date
+    fin = date + step
+    dico_dates[date] = tab_periode[debut:fin].groupby('Immatriculation').apply(time_mean)
+    date = fin
+
+
 
 # Nouvelle fonction permettant d'obtenir en output 1 : le statut de chaque engin
 # en output 2 : le statut des engins de chaque caserne
