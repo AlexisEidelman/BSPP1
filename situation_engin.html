@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>situation_engin_alexis.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>situation_engin_alexis.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Created on Fri May 13 18:35:35 2016
+@author: carrierclement</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">bisect</span>
+<span class="kn">import</span> <span class="nn">datetime</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Chemin d'Alexis</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">path</span> <span class="o">=</span> <span class="s1">u&#39;/home/sgmap/data/BSPP/Extraction LCL PAGNIEZ.csv&#39;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Chemin de Clément
+path = '/Users/carrierclement/Documents/Etalab/BSPP/2015-043-\</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">Extraction</span> <span class="n">LCL</span> <span class="n">PAGNIEZ</span><span class="o">.</span><span class="n">csv</span><span class="s1">&#39;</span>
+
+<span class="n">tab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>je renomme les variables</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">tab</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date_time&#39;</span><span class="p">,</span> <span class="s1">&#39;Id_Intervention&#39;</span><span class="p">,</span> <span class="s1">&#39;Id_Intervention_Motif&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;Code_Cri&#39;</span><span class="p">,</span> <span class="s1">&#39;lieu_initial&#39;</span><span class="p">,</span> <span class="s1">&#39;lieu_intervention&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;Immatriculation&#39;</span><span class="p">,</span> <span class="s1">&#39;type_initial&#39;</span><span class="p">,</span> <span class="s1">&#39;type_intervention&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;Abrege_Statut_Operationnel&#39;</span><span class="p">,</span> <span class="s1">&#39;Statut_Operationnel&#39;</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>creation d'un objet date_time pour la date et de l'heure</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">tab</span><span class="p">[</span><span class="s1">&#39;date_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">tab</span><span class="p">[</span><span class="s1">&#39;date_time&#39;</span><span class="p">]</span>
+                                  <span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%Y %H:%M:%S&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Remarque : pour certaines dates, il y a eu plusieurs interventions</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>On choisit une certaine période d'étude</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">year</span> <span class="o">=</span> <span class="mi">2015</span>
+<span class="n">month</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">day</span> <span class="o">=</span> <span class="mi">22</span>
+<span class="n">hour</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="n">minute</span> <span class="o">=</span> <span class="mi">23</span>
+<span class="n">second</span> <span class="o">=</span> <span class="mi">46</span>
+<span class="n">exemple_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">)</span>
+
+<span class="n">debut</span> <span class="o">=</span> <span class="n">exemple_date</span>
+<span class="n">fin</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span>
+                        <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <h1>pandas time serie option</h1>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">tab</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date_time&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">grp</span> <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Immatriculation&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>def _find_init(tab, debut, fin):
+renvoie la liste des situations entre deux dates</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>On copie la table initiale</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">tab_travail</span> <span class="o">=</span> <span class="n">tab</span><span class="p">[[</span><span class="s1">&#39;Immatriculation&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;Abrege_Statut_Operationnel&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tab_travail</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>On cherche la situation initiale des véhicules sur la période choisie</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">tab_before</span> <span class="o">=</span> <span class="n">tab_travail</span><span class="p">[:</span><span class="n">debut</span><span class="p">]</span>
+<span class="n">etat_initial</span> <span class="o">=</span> <span class="n">tab_before</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Immatriculation&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">last</span><span class="p">()</span>
+<span class="n">manquant</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">tab</span><span class="o">.</span><span class="n">Immatriculation</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">etat_initial</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
+<span class="n">manquant</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Abrege_Statut_Operationnel&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;initial&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">manquant</span><span class="p">)},</span> <span class="n">index</span><span class="o">=</span><span class="n">manquant</span><span class="p">)</span>
+
+<span class="n">etat_initial</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">etat_initial</span><span class="p">,</span><span class="n">manquant</span><span class="p">])</span>
+
+<span class="n">etat_initial</span><span class="p">[</span><span class="s1">&#39;date_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">debut</span>
+<span class="n">etat_initial</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">etat_initial</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date_time&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">tab_periode</span> <span class="o">=</span> <span class="n">tab_travail</span><span class="p">[</span><span class="n">debut</span><span class="p">:</span><span class="n">fin</span><span class="p">]</span>
+<span class="n">tab_periode</span> <span class="o">=</span> <span class="n">etat_initial</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tab_periode</span><span class="p">)</span>
+
+<span class="n">statut_interet</span> <span class="o">=</span> <span class="s1">&#39;R&#39;</span>
+<span class="n">tab_periode</span><span class="p">[</span><span class="s1">&#39;etat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tab_periode</span><span class="p">[</span><span class="s1">&#39;Abrege_Statut_Operationnel&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">statut_interet</span>
+<span class="n">tab_periode</span><span class="p">[</span><span class="s1">&#39;etat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tab_periode</span><span class="p">[</span><span class="s1">&#39;etat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+
+<span class="n">debut_file</span> <span class="o">=</span> <span class="n">tab_periode</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">()</span>
+<span class="n">fin_file</span> <span class="o">=</span> <span class="n">tab_periode</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Fonction permettant de ne pas executer deux fois la fonction goupby et spécifiant les intervalles temporels utilisés.
+Le premier permet d'obtenir avec un pas régulier, le statut de chaque véhicule
+Le deuxième permet de redéfinir l'intervalle souhaité pour calculer pour chaque véhicule la proportion du temps passé dans le statut d'intérêt noté : 'statut_interet'</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">smart_resample</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">group</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;1S&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;1H&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Calcul de la proportion en utilisant la fonction resample</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">resultat</span> <span class="o">=</span> <span class="n">tab_periode</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Immatriculation&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">smart_resample</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">resultat</span><span class="p">[</span><span class="s1">&#39;caserne&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resultat</span><span class="p">[</span><span class="s1">&#39;Immatriculation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">pat</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>On ajoute aléatoirement des codes postaux pour la VIZ</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">post_code</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75001</span><span class="p">,</span><span class="mi">75002</span><span class="p">,</span><span class="mi">75003</span><span class="p">,</span><span class="mi">75004</span><span class="p">,</span><span class="mi">75005</span><span class="p">,</span><span class="mi">75006</span><span class="p">,</span><span class="mi">75007</span><span class="p">,</span><span class="mi">75008</span><span class="p">,</span><span class="mi">75009</span><span class="p">,</span><span class="mi">75010</span><span class="p">,</span><span class="mi">75011</span><span class="p">,</span><span class="mi">75012</span><span class="p">,</span><span class="mi">75013</span><span class="p">,</span><span class="mi">75014</span><span class="p">,</span>
+             <span class="mi">75015</span><span class="p">,</span><span class="mi">75016</span><span class="p">,</span><span class="mi">75017</span><span class="p">,</span><span class="mi">75018</span><span class="p">,</span><span class="mi">75019</span><span class="p">,</span><span class="mi">75020</span><span class="p">,</span><span class="mi">91000</span><span class="p">,</span><span class="mi">92000</span><span class="p">,</span><span class="mi">93000</span><span class="p">,</span><span class="mi">94000</span><span class="p">]</span>
+
+<span class="n">loca</span><span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="p">[])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">resultat</span><span class="o">.</span><span class="n">caserne</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
+<span class="k">for</span> <span class="n">localisation</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">resultat</span><span class="o">.</span><span class="n">caserne</span><span class="o">.</span><span class="n">unique</span><span class="p">()):</span>
+    <span class="n">loca</span><span class="p">[</span><span class="n">localisation</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">post_code</span><span class="p">)</span>
+
+<span class="n">post_code_resultat</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">resultat</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">resultat</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+    <span class="n">post_code_resultat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">loca</span><span class="p">[</span><span class="n">resultat</span><span class="p">[</span><span class="s1">&#39;caserne&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]]</span>
+
+<span class="n">resultat</span><span class="p">[</span><span class="s1">&#39;post_code_resultat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">post_code_resultat</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>On sauvegarde en csv via : resultat.to_csv("result_by_engin_for_map.csv")</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>On peut également s'interesser à la proportion de vehicule dans le statut d'intérêt choisi par caserne. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">resultat_bis</span> <span class="o">=</span> <span class="n">resultat</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date_time&#39;</span><span class="p">)</span>
+<span class="n">resultat_bis</span><span class="p">[</span><span class="s1">&#39;caserne&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resultat</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date_time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Immatriculation</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">pat</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">pivot_function</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">group</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;date_time&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;Immatriculation&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;etat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">resultat_bis</span> <span class="o">=</span> <span class="n">resultat_bis</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;caserne&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pivot_function</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      <p>On sauvegarde en csv via : resultat_bis.to_csv("result_by_caserne_for_map.csv")</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
