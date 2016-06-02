@@ -13,8 +13,7 @@ import datetime
 path = u'/home/sgmap/data/BSPP/Extraction LCL PAGNIEZ.csv'
 
 # Chemin de Clément
-#path = '/Users/carrierclement/Documents/Etalab/BSPP/2015-043-\
-Extraction LCL PAGNIEZ.csv'
+#path = '/Users/carrierclement/Documents/Etalab/BSPP/2015-043-Extraction LCL PAGNIEZ.csv'
 
 tab = pd.read_csv(path, sep=',')
 
