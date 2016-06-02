@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import bisect
 import datetime
+import random
 
 # Chemin d'Alexis
 path = u'/home/sgmap/data/BSPP/Extraction LCL PAGNIEZ.csv'
