@@ -110,15 +110,14 @@ post_code = [75001,75002,75003,75004,75005,75006,75007,75008,75009,75010,75011,7
             94370, 94380, 94390, 94400, 94410, 94420, 94430, 94440, 94440, 94440, 94450, 94460, 94460, 
             94470, 94480, 94490, 94500, 94500, 94510, 94520, 94520, 94550, 94600, 94700, 94800
             ]
-xxx
 
-loca= dict((key, []) for key in list(resultat.caserne.unique()))
-for localisation in list(resultat.caserne.unique()):
-    loca[localisation] = random.choice(post_code)
+casernes = resultat.caserne.unique()
+code_postal = dict(zip(casernes,np.random.choice(post_code, len(casernes)))
+
 
 post_code_resultat = [0] * len(resultat.index)
 for i in resultat.index:
-    post_code_resultat[i] = loca[resultat['caserne'][i]]
+    post_code_resultat[i] = code_postal_by_caserne[resultat['caserne'][i]]
 
 resultat['post_code_resultat'] = post_code_resultat
 # On sauvegarde en csv via : resultat.to_csv("result_by_engin_for_map.csv")
