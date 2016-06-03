@@ -89,7 +89,8 @@ fin_file = tab_periode.index.max().to_datetime()
 # Le deuxième permet de redéfinir l'intervalle souhaité pour calculer pour chaque véhicule la proportion du temps passé dans le statut d'intérêt noté : 'statut_interet'
 
 def smart_resample(group):
-    return group.resample('60S').ffill().resample('1H')
+    import pdb; pdb.set_trace()
+    return group.resample('60S').ffill().resample('1H').mean()
 
 # Calcul de la proportion en utilisant la fonction resample
 resultat = tab_periode.groupby('Immatriculation').apply(smart_resample).reset_index()
@@ -112,11 +113,11 @@ post_code = [75001,75002,75003,75004,75005,75006,75007,75008,75009,75010,75011,7
             ]
 
 casernes = resultat.caserne.unique()
-code_postal = dict(zip(casernes,np.random.choice(post_code, len(casernes)))
+code_postal = dict(zip(casernes,np.random.choice(post_code, len(casernes))))
 
-resultat['post_code_resultat'] = resultat['caserne'].replace(code_postal)
+resultat['code_postal'] = resultat['caserne'].replace(code_postal)
 # On sauvegarde en csv via : 
-# resultat.to_csv("result_by_engin_for_map.csv")
+# resultat.to_csv("engin_status_by_hour.csv", index=False)
 
 
 # On peut également s'interesser à la proportion de vehicule dans le statut d'intérêt choisi par caserne. 
