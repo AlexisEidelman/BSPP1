@@ -89,7 +89,6 @@ fin_file = tab_periode.index.max().to_datetime()
 # Le deuxième permet de redéfinir l'intervalle souhaité pour calculer pour chaque véhicule la proportion du temps passé dans le statut d'intérêt noté : 'statut_interet'
 
 def smart_resample(group):
-    import pdb; pdb.set_trace()
     return group.resample('60S').ffill().resample('1H').mean()
 
 # Calcul de la proportion en utilisant la fonction resample
