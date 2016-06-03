@@ -89,7 +89,7 @@ fin_file = tab_periode.index.max().to_datetime()
 # Le deuxième permet de redéfinir l'intervalle souhaité pour calculer pour chaque véhicule la proportion du temps passé dans le statut d'intérêt noté : 'statut_interet'
 
 def smart_resample(group):
-    return group.resample('1S').ffill().resample('1H')
+    return group.resample('60S').ffill().resample('1H')
 
 # Calcul de la proportion en utilisant la fonction resample
 resultat = tab_periode.groupby('Immatriculation').apply(smart_resample).reset_index()
@@ -108,7 +108,9 @@ post_code = [75001,75002,75003,75004,75005,75006,75007,75008,75009,75010,75011,7
             94110, 94120, 94130, 94140, 94150, 94160, 94170, 94190, 94200, 94210, 94210, 94220, 94230, 
             94240, 94250, 94260, 94270, 94290, 94300, 94310, 94320, 94340, 94350, 94360, 94370, 94370, 
             94370, 94380, 94390, 94400, 94410, 94420, 94430, 94440, 94440, 94440, 94450, 94460, 94460, 
-            94470, 94480, 94490, 94500, 94500, 94510, 94520, 94520, 94550, 94600, 94700, 94800]
+            94470, 94480, 94490, 94500, 94500, 94510, 94520, 94520, 94550, 94600, 94700, 94800
+            ]
+xxx
 
 loca= dict((key, []) for key in list(resultat.caserne.unique()))
 for localisation in list(resultat.caserne.unique()):
