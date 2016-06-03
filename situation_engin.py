@@ -114,13 +114,9 @@ post_code = [75001,75002,75003,75004,75005,75006,75007,75008,75009,75010,75011,7
 casernes = resultat.caserne.unique()
 code_postal = dict(zip(casernes,np.random.choice(post_code, len(casernes)))
 
-
-post_code_resultat = [0] * len(resultat.index)
-for i in resultat.index:
-    post_code_resultat[i] = code_postal_by_caserne[resultat['caserne'][i]]
-
-resultat['post_code_resultat'] = post_code_resultat
-# On sauvegarde en csv via : resultat.to_csv("result_by_engin_for_map.csv")
+resultat['post_code_resultat'] = resultat['caserne'].replace(code_postal)
+# On sauvegarde en csv via : 
+# resultat.to_csv("result_by_engin_for_map.csv")
 
 
 # On peut également s'interesser à la proportion de vehicule dans le statut d'intérêt choisi par caserne. 
