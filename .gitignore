@@ -1,4 +1,4 @@
-# Byte-compiled / optimized / DLL files
+﻿# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 
@@ -55,3 +55,7 @@ target/
 *.spyderproject
 *.spyderworkspace
 Prez/présentation BSPP.odp
+
+adagio/ETALAB*
+adagio/config.ini
+

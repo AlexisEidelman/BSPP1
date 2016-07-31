@@ -1,0 +1,693 @@
+{
+    "Id": [
+        "gdh_Competences", 
+        "Appel112_ServeurCTI", 
+        "Appel112_PFAU_EtatAppel", 
+        "Appel112_ArbreDecisionnel_Categorie", 
+        "Appel112_Intervention_FicheDecisionnelle", 
+        "gdh_MoyensContactCompetence", 
+        "Appel112_PFAU_HistoriqueStatutAppel", 
+        "Appel112_ArbreDecisionnel_Pathologie", 
+        "Appel112_ArbreDecisionnel_Geste", 
+        "gdh_MoyensContactEtablissement", 
+        "gdh_R_TypesCompetence", 
+        "Appel112_ArbreDecisionnel_QuestionsIntervention", 
+        "Appel112_ArbreDecisionnel_Gestes_Intervention", 
+        "gdh_Etablissements", 
+        "gdh_R_Familles", 
+        "Appel112_PFAU_StatutAppel", 
+        "Appel112_ArbreDecisionnel_MotCles", 
+        "gdh_R_TypesMoyenContact", 
+        "Appel112_ArbreDecisionnel_Fiche", 
+        "gdh_Alias"
+    ], 
+    "IdAdresseIntervention": [
+        "Appel112_MMASelection", 
+        "Appel112_RessourcePartageeSelection", 
+        "Appel112_InterventionResume", 
+        "Appel112_AdresseIntervention", 
+        "Appel112_ParcellaireIntervention"
+    ], 
+    "IdAffectationAdministrative": [
+        "Configuration_R_RessourcePartagee", 
+        "Configuration_R_MMA"
+    ], 
+    "IdAppel": [
+        "Appel112_PFAU_HistoriqueStatutAppel", 
+        "Appel112_PFAU_HistoriqueContreAppel", 
+        "Appel112_PFAU_Appel", 
+        "Appel112_PFAU_HistoriqueAppel"
+    ], 
+    "IdAppelRequerant": [
+        "Appel112_Intervention", 
+        "Appel112_AppelRequerant"
+    ], 
+    "IdAssociation": [
+        "GestionMMA_HistoriqueMMAAssociation", 
+        "GestionMMA_MMAAssociation"
+    ], 
+    "IdCommentaire": [
+        "Configuration_R_Commentaire", 
+        "Configuration_MotifAlerteCommentaire"
+    ], 
+    "IdCommentaireType": [
+        "Configuration_R_Commentaire", 
+        "Configuration_R_CommentaireType"
+    ], 
+    "IdCompetenceTerritoriale": [
+        "Configuration_CompetenceTerritorialeAutomatisation", 
+        "Configuration_CompetenceTerritorialeContexteOperationnel", 
+        "Configuration_NiveauAlerteCompetenceTerritoriale"
+    ], 
+    "IdCompetenceTerritorialeAdministrative": [
+        "Configuration_Delestage", 
+        "Configuration_RED"
+    ], 
+    "IdConsignesTelephoniques": [
+        "Appel112_Historique_ConsignesTelephoniques", 
+        "Appel112_ConsignesTelephoniques"
+    ], 
+    "IdContexteEnvironnemental": [
+        "Configuration_CompetenceTerritorialeContexteOperationnel", 
+        "Configuration_R_ContexteEnvironnemental", 
+        "Configuration_RED", 
+        "Configuration_CompetenceTerritorialeAutomatisationParametre"
+    ], 
+    "IdDeclassement": [
+        "GestionMMA_HistoriqueMMADeclassement", 
+        "GestionMMA_MMADeclassement"
+    ], 
+    "IdDecoupageSMS": [
+        "GestionFlotte_EnvoisSMSAntares", 
+        "GestionFlotte_DecoupageSMS"
+    ], 
+    "IdDetachement": [
+        "Configuration_REDComposant_DetachementParAcces", 
+        "Configuration_DetachementDeclinaisonElementParametre", 
+        "Configuration_Detachement"
+    ], 
+    "IdDetachementCategorie": [
+        "Configuration_Detachement", 
+        "Configuration_R_DetachementCategorie"
+    ], 
+    "IdDetachementDeclinaisonElementParametre": [
+        "Configuration_DetachementDeclinaisonElementParametreParametreGeographique", 
+        "Configuration_DetachementDeclinaisonElementParametre", 
+        "Configuration_DetachementDeclinaisonElementParametreFamilleRessourcesDotation"
+    ], 
+    "IdEGO": [
+        "Appel112_CompetenceAttribution", 
+        "GestionFlotte_ParcEGOAffectation", 
+        "GestionFlotte_HistoriqueParcEGOAffectation"
+    ], 
+    "IdEvenement": [
+        "Appel112_EvenementIntervention", 
+        "Appel112_Evenement"
+    ], 
+    "IdFamilleMMA": [
+        "Configuration_FamilleMMAModelisation", 
+        "Configuration_R_ClasseFamillesMMA", 
+        "Configuration_FamilleRessourcesPartageesFamilleMMAFamilleRessourcesDotationPossible", 
+        "Configuration_FamilleMMACategorisation", 
+        "Configuration_FamilleRessourcesPartageesFamilleMMAPossible", 
+        "Configuration_FamilleMMASalleOperationnelleTypeSelection", 
+        "Configuration_FamilleMMAFamilleRessourcesDotationPossible", 
+        "Configuration_FamilleMMATypologie", 
+        "GestionFlotte_IHMFamilleMMAPathImage", 
+        "Configuration_FamilleMMAStatutOperationnelPossible", 
+        "Configuration_R_FamilleMMA"
+    ], 
+    "IdFamilleMMAAssociee": [
+        "GestionMMA_MMAFamilleRessourcesDotationStatutOperationnel", 
+        "GestionMMA_HistoriqueMMAFamilleRessourceDotation"
+    ], 
+    "IdFamilleMMACategorieType": [
+        "Configuration_FamilleMMACategorisation", 
+        "Configuration_R_FamilleMMACategorieType"
+    ], 
+    "IdFamilleMMADeclasse": [
+        "GestionMMA_HistoriqueMMADeclassement", 
+        "GestionMMA_MMADeclassement"
+    ], 
+    "IdFamilleMMAMajeurDeclasse": [
+        "GestionMMA_Omnibus", 
+        "GestionMMA_HistoriqueOmnibus"
+    ], 
+    "IdFamilleMMAMajeurParDefaut": [
+        "GestionMMA_Omnibus", 
+        "GestionMMA_HistoriqueOmnibus"
+    ], 
+    "IdFamilleMMAMineurDeclasse": [
+        "GestionMMA_Omnibus", 
+        "GestionMMA_HistoriqueOmnibus"
+    ], 
+    "IdFamilleMMAMineurParDefaut": [
+        "GestionMMA_Omnibus", 
+        "GestionMMA_HistoriqueOmnibus"
+    ], 
+    "IdFamilleMMAModele": [
+        "Configuration_FamilleMMAModelisation", 
+        "Configuration_R_MMA", 
+        "Configuration_R_FamilleMMAModele"
+    ], 
+    "IdFamilleMMAParDefaut": [
+        "GestionMMA_HistoriqueMMADeclassement", 
+        "GestionMMA_MMADeclassement"
+    ], 
+    "IdFamilleMMAType": [
+        "Configuration_R_FamilleMMAType", 
+        "Configuration_FamilleMMATypologie"
+    ], 
+    "IdFamilleParc": [
+        "GestionFlotte_R_FamilleParc", 
+        "GestionFlotte_FamilleAParc", 
+        "GestionFlotte_HistoriqueR_FamillesParc", 
+        "GestionFlotte_HistoriqueFamilleAParc"
+    ], 
+    "IdFamilleRessourceDotation": [
+        "GestionMMA_HistoriqueRessourcePartageeFamilleRessourceDotation", 
+        "GestionMMA_HistoriqueMMAFamilleRessourceDotation"
+    ], 
+    "IdFamilleRessourcesDotation": [
+        "Configuration_FamilleRessourcesDotationStatutOperationnelPossible", 
+        "Appel112_MMASelection", 
+        "Appel112_RessourcePartageeSelection", 
+        "Configuration_FamilleRessourcesPartageesFamilleMMAFamilleRessourcesDotationPossible", 
+        "GestionMMA_MMAFamilleRessourcesDotationStatutOperationnel", 
+        "GestionMMA_RessourcePartageeFamilleRessourcesDotationStatutOperationnel", 
+        "Configuration_FamilleMMAFamilleRessourcesDotationPossible", 
+        "Configuration_DetachementDeclinaisonElementParametreFamilleRessourcesDotation", 
+        "Configuration_FamilleRessourcesPartageesFamilleRessourcesDotationPossible", 
+        "Configuration_R_FamilleRessourcesDotation"
+    ], 
+    "IdFamilleRessourcesPartagees": [
+        "Configuration_R_FamilleRessourcesPartagees", 
+        "Configuration_R_RessourcePartagee", 
+        "Configuration_FamilleRessourcesPartageesFamilleMMAFamilleRessourcesDotationPossible", 
+        "Configuration_FamilleRessourcesPartageesStatutOperationnelPossible", 
+        "Configuration_FamilleRessourcesPartageesFamilleMMAPossible", 
+        "Configuration_FamilleRessourcesPartageesFamilleRessourcesDotationPossible"
+    ], 
+    "IdFamilleRessourcesType": [
+        "Configuration_R_FamilleRessourcesPartagees", 
+        "Configuration_R_FamilleRessourcesType", 
+        "GestionMMA_MMAFamilleRessourcesDotationStatutOperationnel", 
+        "GestionMMA_RessourcePartageeFamilleRessourcesDotationStatutOperationnel", 
+        "Configuration_R_FamilleRessourcesDotation"
+    ], 
+    "IdFonction": [
+        "AdagioTools_R_UtilisateursAutorises", 
+        "AdagioTools_R_Fonction"
+    ], 
+    "IdHistorique": [
+        "AdagioTools_Historique_ServicePrivePublic", 
+        "Appel112_Historique_ConsignesTelephoniques", 
+        "AdagioTools_Historique_cloture_reactivation", 
+        "AdagioTools_Historique_AutoriteListe", 
+        "Appel112_PFAU_HistoriqueContreAppel"
+    ], 
+    "IdHistoriqueLocalisationMMA": [
+        "GestionFlotte_LienLocalisationMMAStatutOperationnel", 
+        "GestionFlotte_HistoriqueLocalisationMMA"
+    ], 
+    "IdHistoriqueMMAStatutOperationnel": [
+        "GestionFlotte_LienLocalisationMMAStatutOperationnel", 
+        "GestionFlotte_HistoriqueAcquittementStatus", 
+        "GestionMMA_HistoriqueMMAStatutOperationnel"
+    ], 
+    "IdHistoriqueRappel": [
+        "Appel112_AppelRequerant", 
+        "Appel112_HistoriqueAppel"
+    ], 
+    "IdIntervention": [
+        "Appel112_MMASelection", 
+        "Appel112_MMA_AffectationListeDelestage", 
+        "Appel112_RessourcePartageeSelection", 
+        "Appel112_InterventionResume", 
+        "GestionFlotte_SMSODEIntervention", 
+        "Appel112_AdresseIntervention", 
+        "Appel112_SupervisionIntervention", 
+        "Appel112_Intervention_FicheDecisionnelle", 
+        "Appel112_Intervention", 
+        "Appel112_QuestionsOperationnelles", 
+        "AdagioTools_Historique_cloture_reactivation", 
+        "Appel112_HistoriqueIntervention", 
+        "Appel112_InterventionDelestage", 
+        "Appel112_PFAU_Appel", 
+        "Appel112_ArbreDecisionnel_QuestionsIntervention", 
+        "Appel112_ArbreDecisionnel_Gestes_Intervention", 
+        "Appel112_EvenementIntervention"
+    ], 
+    "IdInterventionSolution": [
+        "Appel112_MMASelection", 
+        "Appel112_RessourcePartageeSelection", 
+        "Appel112_Intervention", 
+        "Appel112_InterventionSolution"
+    ], 
+    "IdLieuStationnementAdministratif": [
+        "GestionMMA_HistoriqueMMAAffectationAdministrative", 
+        "GestionMMA_HistoriqueRessourcePartageeAffectationAdministrative"
+    ], 
+    "IdLieuStationnementOperationnel": [
+        "GestionMMA_HistoriqueMMAAffectationOperationnelle", 
+        "Configuration_R_RessourcePartagee", 
+        "GestionMMA_HistoriqueRessourcePartageeAffectationOperationnelle", 
+        "Configuration_R_MMA", 
+        "GestionMMA_MAP_GTA_MoyenSecoursTheorique", 
+        "GestionMMA_HistoriqueMoyenSecoursTheoriqueGTA", 
+        "Configuration_PlanCouvertureOperationnelleFamilleMoyensSecours"
+    ], 
+    "IdMMA": [
+        "GestionMMA_HistoriqueMMAAffectationOperationnelle", 
+        "Appel112_Antares_R_RadiosAntares", 
+        "Appel112_MMASelection", 
+        "Appel112_MMA_AffectationListeDelestage", 
+        "GestionFlotte_RFGIMMAAffectation", 
+        "GestionMMA_HistoriqueRessourcePartageeMMAStatutOperationnel", 
+        "Configuration_R_MMA", 
+        "GestionMMA_MMAFamilleRessourcesDotationStatutOperationnel", 
+        "GestionFlotte_HistoriqueRFGIMMAAffectation", 
+        "GestionMMA_HistoriqueMMAAffectationAdministrative", 
+        "GestionMMA_HistoriqueMMAStatutOperationnel", 
+        "GestionMMA_HistoriqueMMADeclassement", 
+        "GestionMMA_MMADeclassement", 
+        "Configuration_MMAOmnibus_OLD", 
+        "GestionFlotte_HistoriqueLocalisationMMA", 
+        "GestionMMA_HistoriqueMMAFamilleRessourceDotation", 
+        "GestionMMA_RessourcePartageeMMAStatutOperationnel", 
+        "GestionMMA_HistoriqueMMAMoyenSecoursPosition"
+    ], 
+    "IdMMAAssociationType": [
+        "Configuration_MMAAssociation", 
+        "Configuration_R_MMAAssociationType"
+    ], 
+    "IdMMADeclasse": [
+        "GestionMMA_Omnibus", 
+        "GestionMMA_HistoriqueOmnibus"
+    ], 
+    "IdMMAMajeur": [
+        "GestionMMA_Omnibus", 
+        "GestionMMA_HistoriqueOmnibus"
+    ], 
+    "IdMMAMineur": [
+        "GestionMMA_Omnibus", 
+        "GestionMMA_HistoriqueOmnibus"
+    ], 
+    "IdMMAPremier": [
+        "GestionMMA_HistoriqueMMAAssociation", 
+        "GestionMMA_MMAAssociation"
+    ], 
+    "IdMMASelection": [
+        "Appel112_MMARessourcePartageeSelection", 
+        "Appel112_MMASelection", 
+        "GestionFlotte_SMSODEIntervention", 
+        "GestionMMA_FamilleMMASelection", 
+        "GestionMMA_HistoriqueMMAStatutOperationnel", 
+        "GestionMMA_MMASelectionOmnibus"
+    ], 
+    "IdModule": [
+        "GestionFlotte_IHMEGOToolsCouleur", 
+        "GestionFlotte_IHMEGOPathImage", 
+        "Appel112_R_Module", 
+        "GestionFlotte_IHMStatutOperationnelCouleur", 
+        "GestionFlotte_IHMStatutOperationnelPathImage", 
+        "AdagioTools_ModuleActivationExceptions", 
+        "Appel112_SessionUtilisateur", 
+        "GestionFlotte_IHMFonctionPathSons", 
+        "GestionFlotte_IHMFamilleMMAPathImage", 
+        "AdagioTools_ModuleLogsExceptions"
+    ], 
+    "IdModulesGarde": [
+        "AdagioTools_R_ModulesGarde", 
+        "AdagioTools_ModulesGardePourUtilisateur"
+    ], 
+    "IdMotifAlerte": [
+        "Configuration_R_MotifAlerte", 
+        "dbo_TableTampon2", 
+        "Configuration_MotifAlerteCommentaire", 
+        "Configuration_MotifAlerteConsignePrecurseur", 
+        "Configuration_SalleOperationnelleTypeSelection", 
+        "Configuration_Delestage", 
+        "Appel112_InterventionSolution", 
+        "Configuration_SalleOperationnelleTypeDiffusion", 
+        "Configuration_RED"
+    ], 
+    "IdMotifAlerteType": [
+        "Configuration_R_MotifAlerte", 
+        "dbo_TableTampon2", 
+        "Configuration_Delestage", 
+        "Configuration_R_MotifAlerteType"
+    ], 
+    "IdMotifAlerteTypePere": [
+        "dbo_TableTampon2", 
+        "Configuration_R_MotifAlerteType"
+    ], 
+    "IdMoyenSecours": [
+        "GestionMMA_MAP_GTA_MoyenSecoursTheorique", 
+        "GestionMMA_HistoriqueMoyenSecoursTheoriqueGTA"
+    ], 
+    "IdMoyenSecoursAppartenance": [
+        "Configuration_R_RessourcePartagee", 
+        "Configuration_R_MoyenSecoursAppartenance", 
+        "Configuration_R_MMA"
+    ], 
+    "IdMoyenSecoursPosition": [
+        "Configuration_R_RessourcePartagee", 
+        "GestionMMA_HistoriqueRessourcePartageeMoyenSecoursPosition", 
+        "Configuration_R_MoyenSecoursPosition_OLD", 
+        "GestionMMA_HistoriqueMMAMoyenSecoursPosition"
+    ], 
+    "IdMoyenSecoursTheoriqueGTA": [
+        "GestionMMA_MAP_GTA_MoyenSecoursTheorique", 
+        "GestionMMA_HistoriqueMoyenSecoursTheoriqueGTA"
+    ], 
+    "IdNatureCompetenceTerritoriale": [
+        "Configuration_R_MotifAlerte", 
+        "Configuration_R_ClasseFamillesMMA", 
+        "Configuration_DetachementDeclinaisonElementParametreParametreGeographique", 
+        "Configuration_DetachementDeclinaisonElementParametre", 
+        "Configuration_R_FamilleMMA"
+    ], 
+    "IdNiveauAlerte": [
+        "Configuration_R_NiveauAlerte", 
+        "Configuration_CompetenceTerritorialeContexteOperationnel", 
+        "Configuration_NiveauAlerteCompetenceTerritoriale", 
+        "Configuration_RED", 
+        "Configuration_CompetenceTerritorialeAutomatisationParametre"
+    ], 
+    "IdNiveauHierarchiqueTerritorial": [
+        "Configuration_DetachementDeclinaisonElementParametreParametreGeographique", 
+        "Configuration_DetachementDeclinaisonElementParametre"
+    ], 
+    "IdObjetGeo": [
+        "Appel112_InterventionResume", 
+        "Appel112_AdresseIntervention", 
+        "Configuration_SuppressionObjetGeo", 
+        "AdagioTools_ArborescenceEGOTools"
+    ], 
+    "IdObjetSig": [
+        "Configuration_SuppressionObjetGeo", 
+        "gdh_Etablissements"
+    ], 
+    "IdOmnibus": [
+        "GestionMMA_Omnibus", 
+        "GestionMMA_MMASelectionOmnibus", 
+        "GestionMMA_HistoriqueOmnibus"
+    ], 
+    "IdOrigineAppel": [
+        "Appel112_R_OrigineAppel", 
+        "Appel112_Intervention", 
+        "Appel112_PFAU_Appel", 
+        "Configuration_R_Appel112_OrigineAppel"
+    ], 
+    "IdOutilsGarde": [
+        "AdagioTools_R_ModulesGarde", 
+        "AdagioTools_OutilsGardePourUtilisateur", 
+        "AdagioTools_R_OutilsGarde"
+    ], 
+    "IdParc": [
+        "GestionFlotte_HistoriqueR_Parcs", 
+        "GestionFlotte_TypeAParc", 
+        "GestionFlotte_HistoriqueTypeAParc", 
+        "GestionFlotte_FamilleAParc", 
+        "GestionFlotte_ParcEGOAffectation", 
+        "GestionFlotte_R_Parcs", 
+        "GestionFlotte_ParcRFGIAssignation", 
+        "GestionFlotte_HistoriqueFamilleAParc", 
+        "GestionFlotte_HistoriqueParcGestion", 
+        "GestionFlotte_HistoriqueRFGIParcAffectation", 
+        "GestionFlotte_HistoriqueParcEGOAffectation"
+    ], 
+    "IdPersonnel": [
+        "Appel112_AnnuaireCTA", 
+        "AdagioTools_R_PlateformesInitiateurs"
+    ], 
+    "IdPersonnelFermant": [
+        "GestionMMA_HistoriqueMMAAffectationOperationnelle", 
+        "GestionMMA_HistoriqueRessourcePartageeMoyenSecoursPosition", 
+        "GestionMMA_HistoriqueRessourcePartageeMMAStatutOperationnel", 
+        "GestionMMA_HistoriqueRessourcePartageeAffectationOperationnelle", 
+        "GestionMMA_HistoriqueRessourcePartageeAffectationAdministrative", 
+        "GestionMMA_HistoriqueMoyenSecoursTheoriqueGTA", 
+        "GestionMMA_HistoriqueMMAMoyenSecoursPosition"
+    ], 
+    "IdPersonnelPiquet": [
+        "Appel112_InterventionResume", 
+        "Appel112_HistoriqueIntervention", 
+        "GestionMMA_HistoriqueMMAStatutOperationnel", 
+        "Appel112_RegroupementIntervention", 
+        "GestionMMA_HistoriqueRessourcePartageeStatutOperationnel", 
+        "Appel112_debutIntervention", 
+        "GestionMMA_HistoriqueOmnibus", 
+        "Appel112_HistoriqueAppel"
+    ], 
+    "IdPersonnelSaisie": [
+        "GestionMMA_HistoriqueMMAAssociation", 
+        "GestionMMA_HistoriqueRessourcePartageeFamilleRessourceDotation", 
+        "GestionMMA_HistoriqueMMADeclassement", 
+        "GestionMMA_HistoriqueMMAFamilleRessourceDotation"
+    ], 
+    "IdPersonnelSession": [
+        "Appel112_PFAU_HistoriqueStatutAppel", 
+        "Appel112_PFAU_HistoriqueContreAppel", 
+        "Appel112_PFAU_Appel"
+    ], 
+    "IdPilotePABX": [
+        "Appel112_PFAU_Appel", 
+        "Appel112_R_PilotePABX"
+    ], 
+    "IdPlanCouverture": [
+        "GestionMMA_HistoriqueMMAStatutOperationnel", 
+        "GestionMMA_HistoriqueRessourcePartageeStatutOperationnel"
+    ], 
+    "IdPlanCouvertureOperationnelle": [
+        "Configuration_PlanCouvertureOperationnelle", 
+        "Configuration_PlanCouvertureOperationnelleFamilleMoyensSecours"
+    ], 
+    "IdPlanCouvertureOperationnelleFamilleMoyensSecours": [
+        "Configuration_PlanCouvertureOperationnelleFamilleMoyensSecoursClasseFamillesRessourcesDotation", 
+        "Configuration_PlanCouvertureOperationnelleFamilleMoyensSecours", 
+        "Configuration_PlanCouvertureOperationnelleFamilleMoyensSecoursStatutOperationnel"
+    ], 
+    "IdPlateforme": [
+        "GestionFlotte_HistoriqueRFGIPlateformeAffectation", 
+        "AdagioTools_PlateformesPourUtilisateur", 
+        "AdagioTools_PlateformeQualification", 
+        "GestionFlotte_PlateformeSessionAssignation", 
+        "GestionFlotte_PlateformePourGDFParDefault", 
+        "GestionFlotte_RFGIPlateformeAffectation", 
+        "AdagioTools_R_Plateformes"
+    ], 
+    "IdPlateformeQualification": [
+        "AdagioTools_R_PlateformeQualifications", 
+        "AdagioTools_PlateformeQualification"
+    ], 
+    "IdPlateformeType": [
+        "AdagioTools_R_PlateformesType", 
+        "AdagioTools_R_Plateformes"
+    ], 
+    "IdQuestion": [
+        "Appel112_QuestionsOperationnelles", 
+        "Appel112_ArbreDecisionnel_QuestionsIntervention"
+    ], 
+    "IdRED": [
+        "Configuration_REDComposant", 
+        "Configuration_RED"
+    ], 
+    "IdREDComposant": [
+        "Configuration_REDComposant_DetachementParAcces", 
+        "Configuration_REDComposant"
+    ], 
+    "IdRFGI": [
+        "GestionFlotte_R_RFGI", 
+        "GestionFlotte_RFGIMMAAffectation", 
+        "GestionFlotte_HistoriqueRFGIPlateformeAffectation", 
+        "GestionFlotte_HistoriqueR_RFGI", 
+        "GestionFlotte_HistoriqueRFGIMMAAffectation", 
+        "GestionFlotte_HistoriqueRFGIType", 
+        "GestionFlotte_DestinatairesSMS", 
+        "GestionFlotte_ParcRFGIAssignation", 
+        "GestionFlotte_RFGIPlateformeAffectation", 
+        "GestionFlotte_HistoriqueParcGestion", 
+        "GestionFlotte_HistoriqueRFGIParcAffectation", 
+        "GestionFlotte_RFGIType"
+    ], 
+    "IdRessourcePartagee": [
+        "Appel112_RessourcePartageeSelection", 
+        "Configuration_R_RessourcePartagee", 
+        "GestionMMA_HistoriqueRessourcePartageeMoyenSecoursPosition", 
+        "GestionMMA_HistoriqueRessourcePartageeMMAStatutOperationnel", 
+        "GestionMMA_HistoriqueRessourcePartageeAffectationOperationnelle", 
+        "GestionMMA_HistoriqueRessourcePartageeFamilleRessourceDotation", 
+        "GestionMMA_RessourcePartageeFamilleRessourcesDotationStatutOperationnel", 
+        "GestionMMA_HistoriqueRessourcePartageeAffectationAdministrative", 
+        "GestionMMA_HistoriqueRessourcePartageeStatutOperationnel", 
+        "GestionMMA_RessourcePartageeMMAStatutOperationnel"
+    ], 
+    "IdRessourcePartageeSelection": [
+        "Appel112_MMARessourcePartageeSelection", 
+        "Appel112_RessourcePartageeSelection", 
+        "GestionMMA_HistoriqueRessourcePartageeStatutOperationnel"
+    ], 
+    "IdSMS": [
+        "GestionFlotte_SMSODEIntervention", 
+        "GestionFlotte_R_SMS", 
+        "GestionFlotte_HistoriqueR_SMS", 
+        "GestionFlotte_DecoupageSMS", 
+        "GestionFlotte_DestinatairesSMS", 
+        "GestionFlotte_SMSRFGIEnvoi"
+    ], 
+    "IdSalleOperationnelleType": [
+        "Appel112_SessionSalleOperationnelleType", 
+        "Configuration_FamilleMMASalleOperationnelleTypeSelection", 
+        "Configuration_SalleOperationnelleTypeSelection", 
+        "Configuration_R_SalleOperationnelleType", 
+        "AdagioTools_MD5_DroitsUsers", 
+        "Configuration_SalleOperationnelleTypeDiffusion"
+    ], 
+    "IdSession": [
+        "Appel112_SuiviExceptionAdagio", 
+        "GestionFlotte_HistoriqueR_SMS", 
+        "GestionFlotte_HistoriqueRFGIPlateformeAffectation", 
+        "GestionFlotte_HistoriqueR_RFGI", 
+        "GestionFlotte_HistoriqueR_Parcs", 
+        "GestionFlotte_HistoriqueTypeAParc", 
+        "GestionFlotte_HistoriqueRFGIMMAAffectation", 
+        "GestionFlotte_HistoriqueRFGIType", 
+        "Appel112_SessionUtilisateur", 
+        "GestionFlotte_HistoriqueR_FamillesParc", 
+        "GestionFlotte_HistoriqueFamilleAParc", 
+        "GestionFlotte_HistoriqueParcGestion", 
+        "GestionFlotte_HistoriqueRFGIParcAffectation", 
+        "GestionFlotte_HistoriqueParcEGOAffectation", 
+        "GestionFlotte_HistoriqueR_TypesParc"
+    ], 
+    "IdStatusSession": [
+        "Appel112_SessionUtilisateur", 
+        "Appel112_R_StatusSession"
+    ], 
+    "IdStatutIntervention": [
+        "Appel112_R_StatutIntervention", 
+        "Appel112_HistoriqueIntervention"
+    ], 
+    "IdStatutOperationnel": [
+        "Configuration_R_StatutOperationnel", 
+        "Configuration_FamilleRessourcesDotationStatutOperationnelPossible", 
+        "GestionFlotte_DemandeAcquittementStatus", 
+        "Configuration_R_RessourcePartagee", 
+        "Configuration_FamilleRessourcesPartageesStatutOperationnelPossible", 
+        "GestionMMA_HistoriqueRessourcePartageeMMAStatutOperationnel", 
+        "GestionMMA_HistoriqueRessourcePartageeFamilleRessourceDotation", 
+        "Configuration_R_MMA", 
+        "GestionMMA_MMAFamilleRessourcesDotationStatutOperationnel", 
+        "GestionFlotte_HistoriqueAcquittementStatus", 
+        "GestionMMA_RessourcePartageeFamilleRessourcesDotationStatutOperationnel", 
+        "Configuration_StatutOperationnelEnchainementPossible", 
+        "GestionFlotte_IHMStatutOperationnelCouleur", 
+        "GestionFlotte_IHMStatutOperationnelPathImage", 
+        "GestionMMA_HistoriqueMMAStatutOperationnel", 
+        "GestionFlotte_StatusTypeAcquittement", 
+        "GestionMMA_HistoriqueRessourcePartageeStatutOperationnel", 
+        "GestionMMA_HistoriqueMMAFamilleRessourceDotation", 
+        "GestionMMA_RessourcePartageeMMAStatutOperationnel", 
+        "Configuration_FamilleMMAStatutOperationnelPossible", 
+        "Configuration_PlanCouvertureOperationnelleFamilleMoyensSecoursStatutOperationnel"
+    ], 
+    "IdStatutOperationnelMajeurDeclasse": [
+        "GestionMMA_Omnibus", 
+        "GestionMMA_HistoriqueOmnibus"
+    ], 
+    "IdStatutOperationnelMineurDeclasse": [
+        "GestionMMA_Omnibus", 
+        "GestionMMA_HistoriqueOmnibus"
+    ], 
+    "IdSuiviAppel": [
+        "Appel112_PFAU_Appel", 
+        "Configuration_R_Appel112_SuiviAppel", 
+        "Appel112_R_SuiviAppel", 
+        "Appel112_HistoriqueAppel"
+    ], 
+    "IdTicketPABX": [
+        "Appel112_CTI", 
+        "Appel112_CTI_Info", 
+        "Appel112_HistoriqueAppel"
+    ], 
+    "IdTransport": [
+        "Appel112_MMASelection", 
+        "Appel112_RessourcePartageeSelection"
+    ], 
+    "IdTypeAcquittement": [
+        "GestionFlotte_R_TypeAcquittement", 
+        "GestionFlotte_StatusTypeAcquittement"
+    ], 
+    "IdTypeAction": [
+        "GestionFlotte_HistoriqueR_SMS", 
+        "GestionFlotte_HistoriqueRFGIPlateformeAffectation", 
+        "GestionFlotte_HistoriqueR_RFGI", 
+        "GestionFlotte_HistoriqueR_Parcs", 
+        "GestionFlotte_HistoriqueTypeAParc", 
+        "GestionFlotte_HistoriqueRFGIMMAAffectation", 
+        "GestionFlotte_HistoriqueRFGIType", 
+        "GestionFlotte_R_TypeAction", 
+        "GestionFlotte_HistoriqueR_FamillesParc", 
+        "GestionFlotte_HistoriqueFamilleAParc", 
+        "GestionFlotte_HistoriqueParcGestion", 
+        "GestionFlotte_HistoriqueRFGIParcAffectation", 
+        "GestionFlotte_HistoriqueParcEGOAffectation", 
+        "GestionFlotte_HistoriqueR_TypesParc"
+    ], 
+    "IdTypeAdresse": [
+        "Appel112_AdresseIntervention", 
+        "Appel112_R_TypeAdresse"
+    ], 
+    "IdTypeArborescenceEgoTools": [
+        "AdagioTools_R_TypeArborescenceEGOTools", 
+        "AdagioTools_ClassementArborescenceEGOTools", 
+        "AdagioTools_ArborescenceEGOTools"
+    ], 
+    "IdTypeCompetence": [
+        "Appel112_TestBellaudCompetenceAttribution", 
+        "Appel112_TestBellaudR_TypeCompetence"
+    ], 
+    "IdTypeEgoTools": [
+        "AdagioTools_R_TypeEGOTools", 
+        "AdagioTools_ClassementArborescenceEGOTools", 
+        "AdagioTools_ArborescenceEGOTools"
+    ], 
+    "IdTypeMoyenSecours": [
+        "GestionMMA_R_TypeMoyenSecours", 
+        "GestionMMA_MAP_GTA_MoyenSecoursTheorique", 
+        "GestionMMA_HistoriqueMoyenSecoursTheoriqueGTA"
+    ], 
+    "IdTypeParc": [
+        "GestionFlotte_R_TypeParc", 
+        "GestionFlotte_TypeAParc", 
+        "GestionFlotte_HistoriqueTypeAParc", 
+        "GestionFlotte_HistoriqueR_TypesParc"
+    ], 
+    "IdTypeRFGI": [
+        "GestionFlotte_R_TypeRFGI", 
+        "GestionFlotte_HistoriqueRFGIType", 
+        "GestionFlotte_RFGIType"
+    ], 
+    "IdTypeRadio": [
+        "Appel112_Antares_R_RadiosAntares", 
+        "Appel112_Antares_R_TypesRadios"
+    ], 
+    "IdTypeSelection": [
+        "Appel112_MMASelection", 
+        "Appel112_RessourcePartageeSelection", 
+        "Appel112_R_TypeSelection"
+    ], 
+    "IdTypeSuiviAppel": [
+        "Appel112_Intervention", 
+        "Appel112_TypeSuiviAppel", 
+        "Appel112_R_SuiviAppel"
+    ], 
+    "IdUser": [
+        "AdagioTools_PlateformesPourUtilisateur", 
+        "AdagioTools_OutilsGardePourUtilisateur", 
+        "AdagioTools_ModulesGardePourUtilisateur", 
+        "AdagioTools_R_UtilisateursAutorises"
+    ]
+}
