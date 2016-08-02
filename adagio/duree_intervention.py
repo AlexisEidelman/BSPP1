@@ -8,8 +8,6 @@ import pandas as pd
 from read import read_bspp_table, read_configuration
 from tools import translate_id_into_label
 
-R_statut_intervention = read_bspp_table("Appel112_R_StatutIntervention")
-
 tab = read_bspp_table("GestionMMA_HistoriqueMMAStatutOperationnel",
                       skiprows=5000, nrows = 100000,
                       usecols=[1,2,4,5])
@@ -138,13 +136,10 @@ assert all(mma.IdFamilleMMAModele == '1')
 # donc MMAModele = read_configuration('FamilleMMAModele') ne sert à rien
 # donc:
 del mma['IdFamilleMMAModele']
-
 # TODO: regarder les autres variables ident
 # IdLieuStationnementOperationnel 
 # et
 # IdAffectationAdministrative
-
-
 tout_rempli = tout_rempli.merge(mma, on='IdMMA')
 
 
@@ -154,8 +149,9 @@ tout_rempli = tout_rempli.merge(mma, on='IdMMA')
 #        "Appel112_MMASelection",
 #        "Appel112_MMARessourcePartageeSelection",
 #        "GestionMMA_FamilleMMASelection"
-selection = read_bspp_table("Appel112_MMASelection")
+selection = read_bspp_table("Appel112_MMASelection", nrows=1000)
 
+xxx
 type_selection = read_bspp_table("Appel112_R_TypeSelection")
 #   IdTypeSelection AbregeTypeSelection          LibeleTypeSelection
 #0                0                   A                       Annulé
