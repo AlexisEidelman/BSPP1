@@ -1,4 +1,4 @@
-# -*- coding: cp1252 -*-
+# -*- coding: utf8 -*-
 """
 @author: aeidemlan
 """
@@ -11,17 +11,17 @@ from tools import translate_id_into_label
 tab = read_bspp_table("GestionMMA_HistoriqueMMAStatutOperationnel",
                       skiprows=5000, nrows = 100000,
                       usecols=[1,2,4,5])
-# 'IdMMASelection' joue le rôle de numéro d'intervention par
-# véhicule
-                      
+# 'IdMMASelection' joue le rï¿½le de numï¿½ro d'intervention par
+# vï¿½hicule
+
 tab['date'] = pd.to_datetime(tab['DateStatutOperationnelMMA'],
                       format='%Y-%m-%d %H:%M:%S')
 del tab['DateStatutOperationnelMMA']
-tab['date'].value_counts() #beaucoup de date à la millisecondes prises
+tab['date'].value_counts() #beaucoup de date ï¿½ la millisecondes prises
 # plusieurs fois.
 # C'est moins le cas quand on fait tab[test > '2013']
 # tab[test > '2013'].DateStatutOperationnelMMA.value_counts()
-#=> on peut imaginer qu'il y a eu une correction avant 2013         
+#=> on peut imaginer qu'il y a eu une correction avant 2013
 print(tab.date.dt.year.value_counts())
 
 def voir_intervention(num_intervention, from_table=tab):
@@ -31,7 +31,7 @@ def voir_intervention(num_intervention, from_table=tab):
 
 
 statut_op = read_configuration('StatutOperationnel')
-tab = translate_id_into_label('StatutOperationnel', 
+tab = translate_id_into_label('StatutOperationnel',
                               tab, statut_op, method='merge')
 #
 # sit on veut d'autres infos de StatutOperationnel
@@ -50,7 +50,7 @@ utiles = tab[tab['IdMMASelection'] > '0']
 
 # on a des doublons
 len(utiles) == len(utiles.drop_duplicates(['IdMMA', 'IdMMASelection', 'statut']))
-# => on fait les bourrins : on retire les interventions concernées
+# => on fait les bourrins : on retire les interventions concernï¿½es
 # TODO: faire mieux
 avec_doublons = utiles[utiles.duplicated(['IdMMA', 'IdMMASelection', 'statut'])]['IdMMASelection']
 utiles = utiles[~utiles['IdMMASelection'].isin(avec_doublons.unique())]
@@ -61,37 +61,37 @@ bon_format.isnull().sum()
 
 
 
-## prépare un modèle de regression
+## prï¿½pare un modï¿½le de regression
 statut_d_une_intervention_classique = [
-    'Instance de sélection',
-    'Sélection',
-    'Instance départ',
+    'Instance de sÃ©lection',
+    'SÃ©lection',
+    'Instance dÃ©part',
     'Parti',
     'Sur les lieux ',
-    'Transport hôpital',
-    'Arrivée hôpital',
-    'Quitte hôpital',
-    'Indisponible Montée en GARDE',
+    'Transport hÃ´pital',
+    'ArrivÃ©e hÃ´pital',
+    'Quitte hÃ´pital',
+    'Indisponible MontÃ©e en GARDE',
     'Indisponible en Transit',
     # disponible
-    'Rentré',
+    'RentrÃ©',
     'Disponible',
     ]
 # tous les autres c'est indisponible
 
 
-### on crée maintenant les variables utiles pour la régression.
+### on crï¿½e maintenant les variables utiles pour la rï¿½gression.
 # on selectionnce uniquement quand on a rempli la liste suivante
-var_hopital = ['Transport hôpital','Arrivée hôpital','Quitte hôpital']
+var_hopital = ['Transport hÃ´pital','ArrivÃ©e hÃ´pital','Quitte hÃ´pital']
 bon_format['hopital'] = bon_format[var_hopital].notnull().sum(1) > 0
 
 
 statut_obligatoire = [
-    'Instance départ',
+    'Instance dÃ©part',
     'Parti',
     'Sur les lieux',
     # disponible
-    'Rentré',
+    'RentrÃ©',
     'Disponible',
     ]
 cond_tout_rempli = bon_format[statut_obligatoire].isnull().sum(1) == 0
@@ -106,7 +106,7 @@ mma = read_configuration('MMA')
 del mma['IdFamilleMMAOriginelle']
 # TODO: retirer d'autres variables
 #TODO savoir ce qu'est un Omnibus
-to_remove = ['ImmatriculationBSPPMMA', 'ImmatriculationAdministrativeMMA', 
+to_remove = ['ImmatriculationBSPPMMA', 'ImmatriculationAdministrativeMMA',
              'RFGI', 'GSM', 'Actif', 'Strada', 'Libelle_GTA', 'Omnibus',
              'Associe', 'OrdreGTA', 'Disponible', 'Observation',
              'IdStatutOperationnel']
@@ -116,10 +116,10 @@ mma.drop(to_remove, axis=1, inplace=True)
 famille_mma = read_configuration('FamilleMMA')
 del famille_mma['FamilleMMA'] # qui est vide
 mma.rename(columns={'IdFamilleMMAOperationnelle': 'IdFamilleMMA'}, inplace=True)
-mma = translate_id_into_label('FamilleMMA', 
+mma = translate_id_into_label('FamilleMMA',
                               mma, famille_mma, method='merge')
-        
-                              
+
+
 var_nombre = [var for var in famille_mma.columns if 'Nombre' in var]
 famille_mma = famille_mma[['LibelleFamilleMMA'] + var_nombre]
 mma = mma.merge(famille_mma, left_on='FamilleMMA', right_on='LibelleFamilleMMA')
@@ -129,15 +129,15 @@ del mma['LibelleFamilleMMA']
 appartenance = read_configuration('MoyenSecoursAppartenance')
 mma = translate_id_into_label('MoyenSecoursAppartenance',
                               mma, appartenance, method='merge')
-                              
+
 #IdFamilleMMAModele
 assert all(mma.IdFamilleMMAModele == '1')
 # donc variable ininteressante
-# donc MMAModele = read_configuration('FamilleMMAModele') ne sert à rien
+# donc MMAModele = read_configuration('FamilleMMAModele') ne sert ï¿½ rien
 # donc:
 del mma['IdFamilleMMAModele']
 # TODO: regarder les autres variables ident
-# IdLieuStationnementOperationnel 
+# IdLieuStationnementOperationnel
 # et
 # IdAffectationAdministrative
 tout_rempli = tout_rempli.merge(mma, on='IdMMA')
@@ -145,25 +145,25 @@ tout_rempli = tout_rempli.merge(mma, on='IdMMA')
 
 
 #####  les infos sur les interventions ######
-# tables concernée
+# tables concernï¿½e
 #        "Appel112_MMASelection",
 #        "Appel112_MMARessourcePartageeSelection",
 #        "GestionMMA_FamilleMMASelection"
 selection = read_bspp_table("Appel112_MMASelection", nrows=1000)
 
-xxx
-type_selection = read_bspp_table("Appel112_R_TypeSelection")
+
+type_selection = read_bspp_table("Appel112_R_TypeSelection", nrows=1000)
 #   IdTypeSelection AbregeTypeSelection          LibeleTypeSelection
-#0                0                   A                       Annulé
-#1                1                   D                   Définitive
+#0                0                   A                       Annulï¿½
+#1                1                   D                   Dï¿½finitive
 #etc...
 selection = selection.merge(type_selection)
 del selection['IdTypeSelection']
 
 resume = read_bspp_table("Appel112_InterventionResume",
-                         usecols=[0,1,2,3,4])
+                         usecols=[0,1,2,3,4], nrows=1000)
 selection = selection.merge(resume, on = 'IdIntervention')
-# TODO: on a d'autre chose à faire, il faut faire le merge avec
+# TODO: on a d'autre chose ï¿½ faire, il faut faire le merge avec
 # IdMMA par exemple. En attendant
 del selection['IdMMA']
 del selection['IdIntervention']
@@ -175,9 +175,9 @@ tout_rempli.rename(columns={
     'Disponible_x':'Disponible',
     }, inplace=True)
 
-# Il ne reste plus qu'à générer des données sur le temps
+# Il ne reste plus qu'ï¿½ gï¿½nï¿½rer des donnï¿½es sur le temps
 for statut in statut_obligatoire[1:]:
-    tout_rempli[statut + ' duree'] = tout_rempli[statut] - tout_rempli['Instance départ']
+    tout_rempli[statut + ' duree'] = tout_rempli[statut] - tout_rempli['Instance dÃ©part']
     tout_rempli[statut + ' duree s'] = tout_rempli[statut + ' duree'].dt.seconds
     for quart_d_heure in range(8):
         name = statut + ' qt_' + str(quart_d_heure)
@@ -226,11 +226,11 @@ tout_rempli['IdMMA'] = tout_rempli['IdMMA'].replace(int_to_char)
 var_label = ['ObservationsPourMMA', 'LibelleMotif', 'LibeleTypeSelection', 'ImmatriculationBSPPMMA',
 'LibelleMoyenSecoursAppartenance', 'LibelleFamilleMMA']
 for var in var_label:
-    tout_rempli[var] = tout_rempli[var].str.replace('é','e')
+    tout_rempli[var] = tout_rempli[var].str.replace('Ã©','e')
 
-tout_rempli['heure'] = tout_rempli['Instance départ'].dt.hour
+tout_rempli['heure'] = tout_rempli['Instance dÃ©part'].dt.hour
 
-# cette table sert uniquement à passer à IdRessourcePartageeSelection
+# cette table sert uniquement ï¿½ passer ï¿½ IdRessourcePartageeSelection
 read_bspp_table("Appel112_MMARessourcePartageeSelection", nrows=10)
 
 
@@ -239,7 +239,7 @@ read_bspp_table("Appel112_MMARessourcePartageeSelection", nrows=10)
 
 
 
-#comment identifier un véhicule qui a été utilisé de deux façons ?
+#comment identifier un vï¿½hicule qui a ï¿½tï¿½ utilisï¿½ de deux faï¿½ons ?
 
 famille_mma = read_configuration('FamilleMMA')
 # (mma.IdFamilleMMAOriginelle != mma.IdFamilleMMAOperationnelle).value_counts()
@@ -265,7 +265,7 @@ info_mma.merge(famille_mma,
 
 
 #### Etude sur la base appel112 historiqueIntervention
-# TODO: début et fin d'intervention
+# TODO: dï¿½but et fin d'intervention
 tab['vaut_7'] = tab.IdStatutIntervention == '7'
 tab['7_ou_plus'] = tab.IdStatutIntervention >= '7'
 tab.groupby('IdIntervention')['vaut_7'].sum()
@@ -273,7 +273,7 @@ tab.groupby('IdIntervention')['vaut_7'].sum()
 
 
 
-#=> on charge pluttôt les données à la fin du fichier
+#=> on charge pluttï¿½t les donnï¿½es ï¿½ la fin du fichier
 debut = datetime.datetime(2013, 1, 2, 0, 0, 0)
 fin = tab['date'].max().to_datetime()
 
@@ -290,7 +290,3 @@ def smart_resample(group):
 
 # Calcul de la proportion en utilisant la fonction resample
 resultat = tab_periode[['etat','IdMMA']].groupby('IdMMA').apply(smart_resample).reset_index()
-
-
-
-
