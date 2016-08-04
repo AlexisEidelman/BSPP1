@@ -57,7 +57,7 @@ appel_format = translate_id_into_label('StatutIntervention', appel_format, R_sta
 
 
 print(plusieurs_fois_par_intervention.nunique(), len(appel_format))
-# => c'est près de 40% des intervention qu'on a retiré parce que 
+# => c'est près de 40% des intervention qu'on a retiré parce que
 # plusieurs fois le même statut
 
 appel_format.reset_index(inplace=True) # il faudra retirer ça
@@ -68,12 +68,12 @@ appel_format['IdIntervention'] = appel_format['IdIntervention'].astype(str)
 
 
 
-###  La table adresse 
+###  La table adresse
 adresse = read_bspp_table('Appel112_AdresseIntervention', nrows=100000)
 
-_tables_of_ids(['IdAdresseIntervention']) # c'est l'index de la base, 
+_tables_of_ids(['IdAdresseIntervention']) # c'est l'index de la base,
 all(adresse.IdAdresseIntervention.value_counts() == 1)
-# => pas d'intérêt 
+# => pas d'intérêt
 del adresse['IdAdresseIntervention']
 
 adresse.drop_duplicates(inplace=True)
@@ -88,12 +88,12 @@ TypeAdresse = read_bspp_table('Appel112_R_TypeAdresse')
 adresse = translate_id_into_label('TypeAdresse', adresse, TypeAdresse, method='merge')
 del TypeAdresse
 
-_tables_of_ids(['IdObjetGeo']) 
+_tables_of_ids(['IdObjetGeo'])
 # => aucun intérêt
 
 
 
-# parcelle est vide ! 
+# parcelle est vide !
 parcelle = read_bspp_table('Appel112_ParcellaireIntervention')
 _tables_of_ids(_ids_of_tables(['Appel112_ParcellaireIntervention']))
 
@@ -102,7 +102,7 @@ resume = read_bspp_table('Appel112_InterventionResume', nrows=100000)
 tables_to_merge('Appel112_InterventionResume',
                 exclude=['IdPersonnelPiquet','IdIntervention'])
 #  beaucoup de variables sont dans la table adresse.
-# IdObjetGeo est IdAdresse dans la table AdresseIntervention alors qu'elle 
+# IdObjetGeo est IdAdresse dans la table AdresseIntervention alors qu'elle
 # contient aussi un IdObjetGeo différent
 # les coordonnées X, Y changent de nom et sont arrondies.
 

@@ -63,28 +63,28 @@ def save_tables_by_id():
 
 # trouver toutes les bases avec les identifiants
 def _ids_of_tables(tables, exclude=None):
-    ''' 
+    '''
     trouve tous identifiants des tables
     '''
     assert isinstance(tables, list)
-    assert len(tables) == len(set(tables)) # pas de doublons        
+    assert len(tables) == len(set(tables)) # pas de doublons
     ids = []
     for table in tables:
         colnames = colnames_by_table[table]
         if exclude is not None:
             colnames = [x for x in colnames if x not in exclude]
-        colnames = [x for x in colnames 
+        colnames = [x for x in colnames
             if x.startswith('Id') and x not in ids]
         ids += colnames
     return ids
-    
+
 
 def _tables_of_ids(ids):
-    ''' 
+    '''
     trouve les tables contenant les ids
     '''
     assert isinstance(ids, list)
-    assert len(ids) == len(set(ids)) # pas de doublons        
+    assert len(ids) == len(set(ids)) # pas de doublons
     tables = []
     for ident in ids:
         if ident in tables_by_id_to_merge:
@@ -107,11 +107,9 @@ def tables_to_merge(table_name, exclude=None):
         idents_after = _ids_of_tables(table_to_merge_with, exclude)
         print(count)
         count += 1
-    
+
     return table_to_merge_with
 
 
 if __name__ == '__main__':
     save_tables_by_id()
-
-
