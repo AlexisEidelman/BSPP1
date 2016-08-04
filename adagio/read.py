@@ -26,6 +26,8 @@ def read_bspp_table(name, nrows=None, skiprows=None,
     separator = '\\\t'
     path = os.path.join(path_data, name + '.txt')
 
+    if name + '.txt' in os.listdir(os.path.join(path_data, 'empty_files')):
+        raise Exception('Le fichier ' + name + ' est vide')
 
     if optim:
         pass
