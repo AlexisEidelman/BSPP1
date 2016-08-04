@@ -23,7 +23,7 @@ groupes = ['AdagioTools','Appel112','Bipi',
 ## verifie que toutes les tables sont dans un groupe
 len(os.listdir(path_data))
 for table in colnames_by_table.keys():
-    groupe = [x for x in groupes if table.encode('utf8').startswith(x)]
+    groupe = [x for x in groupes if table.startswith(x)]
     print(groupe)
     if groupe == []:
         print('..........pb with ....', table)
