@@ -20,8 +20,9 @@ def translate_id_into_label(suffixe, tab, referentiel, method='merge',
         if other_cols is not None:
             assert isinstance(other_cols, list)
             variables_en_jeu += other_cols
-        tab = tab.merge(referentiel[variables_en_jeu],
-                        on='Id' + suffixe)
-        del tab['Id' + suffixe]
-        return tab.rename(columns={'Libelle' + suffixe: suffixe})
+        output = tab.merge(referentiel[variables_en_jeu],
+                        on='Id' + suffixe,
+                        how='left')
+        del output['Id' + suffixe]
+        return output.rename(columns={'Libelle' + suffixe: suffixe})
     
