@@ -106,7 +106,7 @@ del mma['IdFamilleMMAOriginelle']
 # TODO: retirer d'autres variables
 #TODO savoir ce qu'est un Omnibus
 to_remove = ['ImmatriculationBSPPMMA', 'ImmatriculationAdministrativeMMA',
-             'RFGI', 'GSM', 'Actif', 'Strada', 'Libelle_GTA', 'Omnibus',
+             'RFGI', 'GSM', 'Actif', 'Strada', 'Omnibus',
              'Associe', 'OrdreGTA', 'Disponible', 'Observation',
              'IdStatutOperationnel']
 mma.drop(to_remove, axis=1, inplace=True)
@@ -181,7 +181,7 @@ tout_rempli['longue duree'] = tout_rempli['Disponible duree s'] > 3600*3
 
 
 
-tout_rempli.tail(5).to_csv('bspp_datarobot.csv', index=False)
+#tout_rempli.tail(5).to_csv('bspp_datarobot.csv', index=False)
 
 import numpy as np
 tirage = np.random.randint(0, len(tout_rempli), 50000)
@@ -218,13 +218,16 @@ tout_rempli['IdMMA'] = tout_rempli['IdMMA'].replace(int_to_char)
 
 var_label = ['ObservationsPourMMA', 'LibelleMotif', 'LibeleTypeSelection', 'ImmatriculationBSPPMMA',
 'LibelleMoyenSecoursAppartenance', 'LibelleFamilleMMA']
-for var in var_label:
-    tout_rempli[var] = tout_rempli[var].str.replace('é','e')
+
 
 tout_rempli['heure'] = tout_rempli['Instance départ'].dt.hour
 
+tout_rempli['Affectation_du_vehicule'] = tout_rempli.Libelle_GTA.str.split("_").apply(lambda x: x[2])
+
 # cette table sert uniquement � passer � IdRessourcePartageeSelection
 read_bspp_table("Appel112_MMARessourcePartageeSelection", nrows=10)
+
+
 
 
 
