@@ -53,7 +53,8 @@ appel['IdIntervention'] = appel['IdIntervention'].astype(int)
 appel_format = appel.set_index(id_cols).unstack()
 appel_format.columns = appel_format.columns.levels[1]
 
-appel_format = translate_id_into_label('StatutIntervention', appel_format, R_statut)
+appel_format = translate_id_into_label('StatutIntervention', appel_format,
+    R_statut, method='columns')
 
 
 print(plusieurs_fois_par_intervention.nunique(), len(appel_format))
@@ -85,7 +86,7 @@ _tables_of_ids(['IdObjetGeo'])
 # le type des adresses
 _tables_of_ids(['IdTypeAdresse'])
 TypeAdresse = read_bspp_table('Appel112_R_TypeAdresse')
-adresse = translate_id_into_label('TypeAdresse', adresse, TypeAdresse, method='merge')
+adresse = translate_id_into_label('TypeAdresse', adresse, TypeAdresse)
 del TypeAdresse
 
 _tables_of_ids(['IdObjetGeo'])

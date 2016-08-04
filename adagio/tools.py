@@ -3,7 +3,7 @@
 @author: alexis
 """
 
-def translate_id_into_label(suffixe, tab, referentiel, method='columns'):
+def translate_id_into_label(suffixe, tab, referentiel, method='merge'):
     ''' suffixe c'est le nom de la variable qui est précédé par Id, Abrege
         ou Libelle 
     '''

@@ -31,8 +31,7 @@ def voir_intervention(num_intervention, from_table=tab):
 
 
 statut_op = read_configuration('StatutOperationnel')
-tab = translate_id_into_label('StatutOperationnel',
-                              tab, statut_op, method='merge')
+tab = translate_id_into_label('StatutOperationnel', tab, statut_op)
 #
 # sit on veut d'autres infos de StatutOperationnel
 #tab = tab.merge(statut_op[['IdStatutOperationnel', 'LibelleStatutOperationnel', 'Disponibilite']])
@@ -116,8 +115,7 @@ mma.drop(to_remove, axis=1, inplace=True)
 famille_mma = read_configuration('FamilleMMA')
 del famille_mma['FamilleMMA'] # qui est vide
 mma.rename(columns={'IdFamilleMMAOperationnelle': 'IdFamilleMMA'}, inplace=True)
-mma = translate_id_into_label('FamilleMMA',
-                              mma, famille_mma, method='merge')
+mma = translate_id_into_label('FamilleMMA', mma, famille_mma)
 
 
 var_nombre = [var for var in famille_mma.columns if 'Nombre' in var]
@@ -127,8 +125,7 @@ del mma['LibelleFamilleMMA']
 
 # Apparentance
 appartenance = read_configuration('MoyenSecoursAppartenance')
-mma = translate_id_into_label('MoyenSecoursAppartenance',
-                              mma, appartenance, method='merge')
+mma = translate_id_into_label('MoyenSecoursAppartenance', mma, appartenance)
 
 #IdFamilleMMAModele
 assert all(mma.IdFamilleMMAModele == '1')
