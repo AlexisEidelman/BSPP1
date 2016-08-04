@@ -115,13 +115,9 @@ mma.drop(to_remove, axis=1, inplace=True)
 famille_mma = read_configuration('FamilleMMA')
 del famille_mma['FamilleMMA'] # qui est vide
 mma.rename(columns={'IdFamilleMMAOperationnelle': 'IdFamilleMMA'}, inplace=True)
-mma = translate_id_into_label('FamilleMMA', mma, famille_mma)
-
-
 var_nombre = [var for var in famille_mma.columns if 'Nombre' in var]
-famille_mma = famille_mma[['LibelleFamilleMMA'] + var_nombre]
-mma = mma.merge(famille_mma, left_on='FamilleMMA', right_on='LibelleFamilleMMA')
-del mma['LibelleFamilleMMA']
+mma = translate_id_into_label('FamilleMMA', mma, famille_mma,
+    other_cols = var_nombre)
 
 # Apparentance
 appartenance = read_configuration('MoyenSecoursAppartenance')
