@@ -65,6 +65,46 @@ def Adresses():
     return adresse
 
 
+def caserne():
+    ''' on peut se servir de cette table pour
+        remonter sur chaque casernes, l'info de la compagnie
+        a laquelle elle appartient et ainsi de suite
+    '''
+    base = read_bspp_table("AdagioTools_ArborescenceEGOTools")
+    assert(all(base.IdTypeEgoTools == '1')) # on pourrait fusionner avec
+    # "AdagioTools_R_TypeEGOTools" et on aurait le label  "Brigade de
+    # Sapeurs-Pompiers de Paris"
+    # IdAgoTools permet de relier à d'autres tables comme "affectation administrative"
+    del base['IdTypeEgoTools']
+
+    TypeArboresences = read_bspp_table("AdagioTools_R_TypeArborescenceEGOTools")
+    base = translate_id_into_label('TypeArborescenceEgoTools',
+                                       base, TypeArboresences)
+
+    casernes = base[base['TypeArborescenceEgoTools'] == 'Lieu de stationnement opérationnel']
+    compagnies = base[base['TypeArborescenceEgoTools'] == "Compagnie d'Incendie et de Secours"]
+    groupements = base[base['TypeArborescenceEgoTools'] == "Groupement d'Incendie et de Secours"]
+    # chaque base dans une compagnie ?
+    all(casernes['IdArboEgoToolsPERE'].isin(compagnies['IdArboEgoTools']))
+    all(compagnies['IdArboEgoToolsPERE'].isin(groupements['IdArboEgoTools']))
+    compagnies = compagnies.merge(groupements[['IdArboEgoTools', 'LibelleEgoTools']],
+                                  left_on='IdArboEgoToolsPERE',
+                                  right_on='IdArboEgoTools',
+                                  suffixes=('', '_gpt'))
+
+    casernes = casernes.merge(compagnies[['IdArboEgoTools', 'LibelleEgoTools', 'LibelleEgoTools_gpt']],
+                                  left_on='IdArboEgoToolsPERE',
+                                  right_on='IdArboEgoTools',
+                                  suffixes=('', '_cie'))
+
+    casernes.rename(columns={'LibelleEgoTools_gpt': 'Groupement',
+                         'LibelleEgoTools_cie': 'Compagnie'},
+                         inplace=True)
+
+    casernes = casernes[['IdEgoTools','LibelleEgoTools', 'AbregeEgoTools',
+                         'Groupement', 'Compagnie']]
+    return casernes
+
 
 def MMA():
     '''
@@ -79,6 +119,9 @@ def MMA():
                  'RFGI', 'GSM', 'Actif', 'Strada', 'Omnibus',
                  'Associe', 'OrdreGTA', 'Disponible', 'Observation',
                  'IdStatutOperationnel']
+    #TODO: 
+    # On pourrait regarder RFGI avec GestionFlotte_R_RFGI
+    # 
     mma.drop(to_remove, axis=1, inplace=True)
 
     # famille mma
@@ -103,45 +146,7 @@ def MMA():
     # IdLieuStationnementOperationnel
     # et
     # IdAffectationAdministrative
-    def caserne():
-        ''' on peut se servir de cette table pour
-            remonter sur chaque casernes, l'info de la compagnie
-            a laquelle elle appartient et ainsi de suite
-        '''
-        base = read_bspp_table("AdagioTools_ArborescenceEGOTools")
-        assert(all(base.IdTypeEgoTools == '1')) # on pourrait fusionner avec
-        # "AdagioTools_R_TypeEGOTools" et on aurait le label  "Brigade de
-        # Sapeurs-Pompiers de Paris"
-        # IdAgoTools permet de relier à d'autres tables comme "affectation administrative"
-        del base['IdTypeEgoTools']
 
-        TypeArboresences = read_bspp_table("AdagioTools_R_TypeArborescenceEGOTools")
-        base = translate_id_into_label('TypeArborescenceEgoTools',
-                                           base, TypeArboresences)
-
-        casernes = base[base['TypeArborescenceEgoTools'] == 'Lieu de stationnement opérationnel']
-        compagnies = base[base['TypeArborescenceEgoTools'] == "Compagnie d'Incendie et de Secours"]
-        groupements = base[base['TypeArborescenceEgoTools'] == "Groupement d'Incendie et de Secours"]
-        # chaque base dans une compagnie ?
-        all(casernes['IdArboEgoToolsPERE'].isin(compagnies['IdArboEgoTools']))
-        all(compagnies['IdArboEgoToolsPERE'].isin(groupements['IdArboEgoTools']))
-        compagnies = compagnies.merge(groupements[['IdArboEgoTools', 'LibelleEgoTools']],
-                                      left_on='IdArboEgoToolsPERE',
-                                      right_on='IdArboEgoTools',
-                                      suffixes=('', '_gpt'))
-
-        casernes = casernes.merge(compagnies[['IdArboEgoTools', 'LibelleEgoTools', 'LibelleEgoTools_gpt']],
-                                      left_on='IdArboEgoToolsPERE',
-                                      right_on='IdArboEgoTools',
-                                      suffixes=('', '_cie'))
-
-        casernes.rename(columns={'LibelleEgoTools_gpt': 'Groupement',
-                             'LibelleEgoTools_cie': 'Compagnie'},
-                             inplace=True)
-
-        casernes = casernes[['IdEgoTools','LibelleEgoTools',
-                             'Groupement', 'Compagnie']]
-        return casernes
 
     casernes = caserne()
     mma = mma.merge(casernes, left_on='IdLieuStationnementOperationnel',
@@ -175,6 +180,39 @@ selection = translate_id_into_label('FamilleRessourcesDotation',
 
 selection = selection.merge(Adresses())
 
-selection = selection.merge(MMA())
 
-
+if __name__ == '__main__':
+    # Libelle_GTA est plus cohérent avec le Cstc de la table adresse
+    # que le 'AbregeEgoTools' de la table mma
+    
+    # il y a un problème entre les cstc de la table adresse 
+    mma = MMA()
+    selection = selection.merge(MMA())
+    
+    mma['test_GTA'] = mma.Libelle_GTA.str.split("_").str[2]
+    mma.head()
+    mma.AbregeEgoTools == mma.test_GTA
+    (mma.AbregeEgoTools == mma.test_GTA)
+    cond = (mma.AbregeEgoTools == mma.test_GTA)
+    cond.value_counts()
+    mma[not cond]
+    mma[~cond]
+    mma[~cond].head()
+    mma[~cond].head(20)
+    mma[~cond][['Libelle_GTA', 'AbregeEgoTools']]
+    adresse = Adresses()
+    adresse.head()
+    adresse.Cstc.value_counts()
+    adresse.Cstc.isin(mma.test_GTA.values)
+    sum(adresse.Cstc.isin(mma.test_GTA.values))
+    sum(adresse.Cstc.isin(mma.AbregeEgoTools.values))
+    len(adresse)
+    cond = adresse.Cstc.isin(mma.test_GTA.values)
+    adresse[~cond].head()
+    adresse[~cond].head(20)
+    adresse[~cond]['Cstc'].value_counts(dropna=False)
+    99686 - 97976
+    "GestionMMA_HistoriqueMoyenSecoursTheoriqueGTA"
+    mma[mma.Cstc == 'CCHY']
+    mma[mma['Cstc'] == 'CCHY']
+    mma.head()
