@@ -16,7 +16,7 @@ from variables import tables_to_merge, _tables_of_ids, _ids_of_tables
 lim_nrows = 100000
 
 selection = read_bspp_table("Appel112_MMASelection", nrows=lim_nrows,
-                            usecols=[1,2,3,4,5,6] # on verra si on ajoute 7
+                            usecols=[0,1,2,3,4,5,6] # on verra si on ajoute 7
                             #l'observation
                             )
 
@@ -26,10 +26,10 @@ def correction_selection(tab):
 
 selection = correction_selection(selection)
 ## Les variables
-#IdMMASelection                 merge avec les interventions usecols
-#IdIntervention                 object
+#IdMMASelection                 rend possible le merge avec GestionMMA_HistoriqueMMAStatutOperationnel
+#IdIntervention                 rend possible le merge avec Appel112_Intervention et "Appel112_HistoriqueIntervention"
 #IdTypeSelection                object
-#IdInterventionSolution         object
+#IdInterventionSolution         Ne sert pas, voir ci-dessous, pas dans usecols
 #IdMMA                          traité ci-dessous
 #IdFamilleRessourcesDotation    traité ci-dessous
 #IdAdresseIntervention          traité ci-dessous
@@ -150,6 +150,15 @@ def MMA():
     return mma
 
 
+def InterventionSolution():
+    _tables_of_ids(['IdInterventionSolution'])
+    solution = read_bspp_table('Appel112_InterventionSolution', nrows=lim_nrows)
+    # cette table est vide
+    # => IdInterventionSolution ne sert pas
+    # TODO: savoir pourquoi
+
+
+read_bspp_table("Appel112_R_TypeSelection"
 
 FamilleRessourceDotation = FamilleRessourceDotation()
 selection = translate_id_into_label('FamilleRessourcesDotation',
