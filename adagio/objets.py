@@ -28,6 +28,9 @@ def Adresses(lim_nrows=None):
     adresse = translate_id_into_label('TypeAdresse', adresse, TypeAdresse)
     del TypeAdresse
 
+    # parcelle est vide !
+    #parcelle = read_bspp_table('Appel112_ParcellaireIntervention')
+
     return adresse
 
 

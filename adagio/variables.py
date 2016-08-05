@@ -24,7 +24,7 @@ groupes = ['AdagioTools','Appel112','Bipi',
 len(os.listdir(path_data))
 for table in colnames_by_table.keys():
     groupe = [x for x in groupes if table.startswith(x)]
-    print(groupe)
+#    print(groupe)
     if groupe == []:
         print('..........pb with ....', table)
 
