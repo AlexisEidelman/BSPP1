@@ -19,8 +19,15 @@ from tools import translate_id_into_label
 
 lim_nrows = 10000
 
-appel = read_bspp_table('Appel112_HistoriqueIntervention', nrows = 100000,
+appel = read_bspp_table('Appel112_HistoriqueIntervention', nrows = lim_nrows,
                         usecols=[1,2,4])
+
+def PFAU():
+    historique = read_bspp_table("Appel112_PFAU_HistoriqueStatutAppel", nrows = 100)
+    appel = read_bspp_table("Appel112_PFAU_Appel", nrows = 10000)
+    # tables très mal remplies !
+    return
+
 
 tables_to_merge('Appel112_HistoriqueIntervention', exclude=['IdPersonnelPiquet'])
 
@@ -30,26 +37,28 @@ _tables_of_ids(['IdIntervention'])
 # L'ordre des identifiants joue, on abandonne le merge pour le faire
 # après le changement de format
 R_statut = read_bspp_table('Appel112_R_StatutIntervention')
-for col in R_statut.columns:
-    if col.startswith('Abrege'):
-        if col.replace('Abrege', 'Libelle') in R_statut.columns:
-            del R_statut[col]
-
-#assert appel['IdStatutIntervention'].isnull().sum() == 0
-#appel = appel.merge(R_statut)
-#del appel['IdStatutIntervention']
-
-
+#       IdStatutIntervention AbregeStatutIntervention LibelleStatutIntervention
+#    0                     1                      DEB                     Début
+#    1                     2                      ENV                     Envoi
+#    2                     3                      REC                 Réception
+#    3                     4                      VAM       Validation manuelle
+#    4                     5                      VAA    Validation automatique
+#    5                     6                      ANN                Annulation
+#    6                     7                      FIN                       Fin
+#    7                     8                      ENC                  En cours
+#    8                     9                      RAP         Rapports  rédigés
+#    9                    12                      CLA       Cloture automatique
+#    10                   13                      CLI      Cloture intervention
+#    11                   14                      CLO         Cloture opération
 id_cols = ['IdIntervention', 'IdStatutIntervention']
 plusieurs_fois_par_intervention = appel[appel.duplicated(id_cols)]['IdIntervention']
 appel = appel[~appel['IdIntervention'].isin(plusieurs_fois_par_intervention.unique())]
-
 
 appel.groupby(id_cols).filter(lambda x: len(x) > 1)
 
 # pas sûr que ce soit robuste avec beaucoup de valeur.
 # TODO: garder le caractère puisque l'ordre ne sert pas en définitive
-appel['IdIntervention'] = appel['IdIntervention'].astype(int)
+appel['IdStatutIntervention'] = appel'IdStatutIntervention'].astype(int)
 appel_format = appel.set_index(id_cols).unstack()
 appel_format.columns = appel_format.columns.levels[1]
 
@@ -64,7 +73,7 @@ print(plusieurs_fois_par_intervention.nunique(), len(appel_format))
 appel_format.reset_index(inplace=True) # il faudra retirer ça
 appel_format['IdIntervention'] = appel_format['IdIntervention'].astype(str)
 
-
+xxx
 
 
 
