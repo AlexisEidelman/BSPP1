@@ -31,9 +31,10 @@ def PFAU():
 
 tables_to_merge('Appel112_HistoriqueIntervention', exclude=['IdPersonnelPiquet'])
 
-_tables_of_ids(['IdStatutIntervention'])
-_tables_of_ids(['IdIntervention'])
 
+
+
+_tables_of_ids(['IdStatutIntervention'])
 # L'ordre des identifiants joue, on abandonne le merge pour le faire
 # après le changement de format
 R_statut = read_bspp_table('Appel112_R_StatutIntervention')
@@ -58,9 +59,9 @@ appel.groupby(id_cols).filter(lambda x: len(x) > 1)
 
 # pas sûr que ce soit robuste avec beaucoup de valeur.
 # TODO: garder le caractère puisque l'ordre ne sert pas en définitive
-appel['IdStatutIntervention'] = appel'IdStatutIntervention'].astype(int)
+appel['IdStatutIntervention'] = appel['IdStatutIntervention'].astype(int)
 appel_format = appel.set_index(id_cols).unstack()
-appel_format.columns = appel_format.columns.levels[1]
+appel_format.columns = [str(x) for x in appel_format]
 
 appel_format = translate_id_into_label('StatutIntervention', appel_format,
     R_statut, method='columns')
@@ -78,34 +79,67 @@ xxx
 
 
 
-###  La table adresse
-adresse = read_bspp_table('Appel112_AdresseIntervention', nrows=100000)
+def Interventions():
+    _tables_of_ids(['IdIntervention'])
+#    "Appel112_MMASelection",  Table centrale voir selection.py
+#    "Appel112_MMA_AffectationListeDelestage",  vide
+#    "Appel112_RessourcePartageeSelection",  non traitée
+#    "Appel112_InterventionResume",   agrégat d'autres tables
+#    "GestionFlotte_SMSODEIntervention",  lien vers 3300 SMS : pas d'intérêt
+#    "Appel112_AdresseIntervention",    voir objets.py
+#    "Appel112_SupervisionIntervention", lien vers 10 IP : pas d'intérêt
+#    "Appel112_Intervention_FicheDecisionnelle",  valable à partir de 2014-11-06 (voir plus bas)
+#    "Appel112_Intervention", 
+#    "Appel112_QuestionsOperationnelles",  # voir ci-dessous
+#    "Appel112_ArbreDecisionnel_QuestionsIntervention", le ref manque ! dommage
+#    "AdagioTools_Historique_cloture_reactivation", 
+#    "Appel112_InterventionDelestage", est vide
+#    "Appel112_PFAU_Appel", 
+#    "Appel112_ArbreDecisionnel_Gestes_Intervention", # traité ci-dessous
+#    "Appel112_EvenementIntervention" # est vide
+    return
+    
 
-_tables_of_ids(['IdAdresseIntervention']) # c'est l'index de la base,
-all(adresse.IdAdresseIntervention.value_counts() == 1)
-# => pas d'intérêt
-del adresse['IdAdresseIntervention']
+def FicheDecisionnelle():
+    Fiche = read_bspp_table("Appel112_Intervention_FicheDecisionnelle")
+    Fiche = Fiche[['IdIntervention','IdFicheDecisionnelle']]
+    R_Fiche = read_bspp_table("Appel112_ArbreDecisionnel_Fiche")
+    for nom in ["Categorie", "Pathologie"]:
+        nom_table = "Appel112_ArbreDecisionnel_" + nom
+        table = read_bspp_table(nom_table)[['Id', 'Libelle']]
+        R_Fiche = R_Fiche.merge(table, left_on='Id' + nom,
+                            right_on = 'Id', suffixes=('', '_R'))
+        del R_Fiche['Id' + nom]
+        del R_Fiche['Id_R']
+        R_Fiche.rename(columns={'Libelle':nom}, inplace=True)
+    
+    Fiche = Fiche.merge(R_Fiche, 
+                          left_on='IdFicheDecisionnelle',
+                          right_on = 'Id',
+                          suffixes=('', '_R')
+                         )
+    return Fiche
 
-adresse.drop_duplicates(inplace=True)
 
-# les identifiants adresses (qui est en fait 'IdObjetGeo')
-_tables_of_ids(['IdObjetGeo'])
-# pas d'intérêt
-
-# le type des adresses
-_tables_of_ids(['IdTypeAdresse'])
-TypeAdresse = read_bspp_table('Appel112_R_TypeAdresse')
-adresse = translate_id_into_label('TypeAdresse', adresse, TypeAdresse)
-del TypeAdresse
-
-_tables_of_ids(['IdObjetGeo'])
-# => aucun intérêt
+def Gestes():
+    gestes = read_bspp_table("Appel112_ArbreDecisionnel_Gestes_Intervention")
+    R_gestes = read_bspp_table("Appel112_ArbreDecisionnel_Geste")[['Id', 'Libelle']]
+    gestes = gestes.merge(R_gestes, left_on='IdGeste',
+                          right_on='Id', suffixes=('', '_R')
+                          )
+    del gestes['IdGeste']
+    del gestes['Id_R']
+    gestes.rename(columns={'Libelle':'Geste'}, inplace=True)    
+    return Gestes
 
 
+def Questions(lim_nrows=None):
+    questions = read_bspp_table("Appel112_QuestionsOperationnelles", nrows=lim_nrows)
+    # table de 17 000 000 de lignes
+    # Mais R question est vide
+    # read_bspp_table("Appel112_ArbreDecisionnel_QuestionsIntervention")
 
-# parcelle est vide !
-parcelle = read_bspp_table('Appel112_ParcellaireIntervention')
-_tables_of_ids(_ids_of_tables(['Appel112_ParcellaireIntervention']))
+
 
 
 resume = read_bspp_table('Appel112_InterventionResume', nrows=100000)
