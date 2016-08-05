@@ -11,7 +11,7 @@ from config import config
 from colnames_by_table import colnames_by_table
 
 path_data = config['PATH']['DATA']
-path_dico = config['PATH']['DICTIONNAIRE']
+path_dico = config['PATH']['OUTPUT']
 
 groupes = ['AdagioTools','Appel112','Bipi',
           'communication','Configuration','gdh',
