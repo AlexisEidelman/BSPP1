@@ -7,6 +7,9 @@ des headers.
 
 Une autre pour lire les fichiers de configurations
 
+NOTE:
+delete_empty_table doit avoir été lancé avant. En tout cas,
+le fichier /empty_files doit exister
 
 @author: aeidelman
 """
@@ -15,8 +18,10 @@ import os
 import io
 import pandas as pd
 
+
 from config import config
 from colnames_by_table import colnames_by_table
+
 
 path_data = config['PATH']['DATA']
 
