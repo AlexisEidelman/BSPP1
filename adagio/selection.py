@@ -55,18 +55,33 @@ def InterventionSolution():
     try:
         solution = read_bspp_table('Appel112_InterventionSolution', nrows=lim_nrows)
     # cette table est vide
-    # => on utilise resume a la place d'IdInterventionSolution 
+    # => on utilise resume a la place d'IdInterventionSolution
     except:
-        resume = read_bspp_table('Appel112_InterventionResume', nrows=lim_nrows,
-                         usecols = [0,2,3,4,6,7,12,17])
+        solution = read_bspp_table('Appel112_InterventionResume', nrows=lim_nrows,
+                         usecols = [0,2,4,6,7,12,17])
+    # on retire le libellé car celui de motifs est meilleurs
+                         # pas de problème d'accents
     #  beaucoup de variables sont dans la table adresse.
     # IdObjetGeo est IdAdresse dans la table AdresseIntervention alors que cette table
     # contient aussi un IdObjetGeo différent
-    # les coordonnées X, Y changent de nom et sont arrondies dans resumé mais on 
+    # les coordonnées X, Y changent de nom et sont arrondies dans resumé mais on
     # peut s'en passer.
+    motifs = read_configuration('MotifAlerte')
+    # les libellé sont mieux dans motifs...
+    motifs_type = read_configuration("MotifAlerteType")
+    solution = solution.merge(motifs[['AbregeMotifAlerte','LibelleMotifAlerte',
+                                   'LibelleMotifAlerteType']],
+                         left_on='AbregeMotif',
+                         right_on='AbregeMotifAlerte',
+                         )
+    # TODO: rechercher d'autres variables
+    # _tables_of_ids(['IdMotifAlertePreavis'])                         
+    del solution['AbregeMotifAlerte']
+    del solution['AbregeMotif']
 
     # Qu'est ce que 'IdGrilleDepart ? ça a l'air important.
     return solution
+
 
 
 type_selection = read_bspp_table("Appel112_R_TypeSelection").rename(columns={
@@ -87,38 +102,39 @@ selection = translate_id_into_label('FamilleRessourcesDotation',
 adresses = Adresses(lim_nrows)
 def pb_in_selection():
     selection_bis = selection.merge(adresses,
-                            on=['IdAdresseIntervention'])  
+                            on=['IdAdresseIntervention'])
     test = (selection_bis.IdIntervention_x == selection_bis.IdIntervention_y)
     selection_bis[~test]
     interventions_a_pb = ['23448', '24596']
     selection[selection.IdIntervention.isin(interventions_a_pb)]
-    
+del adresses['IdIntervention']
+
 selection = selection.merge(adresses,
                             on=['IdAdresseIntervention'])
 
+solution = InterventionSolution()
+selection = selection.merge(solution)
 
-    
 tables_to_merge('Appel112_InterventionResume',
                 exclude=['IdPersonnelPiquet','IdIntervention'])
 
 
-)
-motif = read_configuration('MotifAlerte')
-_tables_of_ids(['IdMotifAlertePreavis'])
-_tables_of_ids(['IdIntervention'])
 
-    
-    
+
+
+
+
+
 xxx
 
 if __name__ == '__main__':
     # Libelle_GTA est plus cohérent avec le Cstc de la table adresse
     # que le 'AbregeEgoTools' de la table mma
-    
-    # il y a un problème entre les cstc de la table adresse 
+
+    # il y a un problème entre les cstc de la table adresse
     mma = MMA()
     selection = selection.merge(MMA(lim_nrows))
-    
+
     mma['test_GTA'] = mma.Libelle_GTA.str.split("_").str[2]
     mma.head()
     mma.AbregeEgoTools == mma.test_GTA
