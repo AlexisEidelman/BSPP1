@@ -74,10 +74,6 @@ print(plusieurs_fois_par_intervention.nunique(), len(appel_format))
 appel_format.reset_index(inplace=True) # il faudra retirer ça
 appel_format['IdIntervention'] = appel_format['IdIntervention'].astype(str)
 
-xxx
-
-
-
 
 def Interventions():
     _tables_of_ids(['IdIntervention'])
@@ -142,17 +138,3 @@ def Questions(lim_nrows=None):
 
 
 
-resume = read_bspp_table('Appel112_InterventionResume', nrows=100000)
-tables_to_merge('Appel112_InterventionResume',
-                exclude=['IdPersonnelPiquet','IdIntervention'])
-#  beaucoup de variables sont dans la table adresse.
-# IdObjetGeo est IdAdresse dans la table AdresseIntervention alors qu'elle
-# contient aussi un IdObjetGeo différent
-# les coordonnées X, Y changent de nom et sont arrondies.
-
-# le lien entre IdIntervention et 'IdGrilleDepart est la vraie richesse
-# de la base resume
-# surtout qu'on n'a pas le table InterventinoSolution (elle est vide)
-motif = read_configuration('MotifAlerte')
-_tables_of_ids(['IdMotifAlertePreavis'])
-_tables_of_ids(['IdIntervention'])

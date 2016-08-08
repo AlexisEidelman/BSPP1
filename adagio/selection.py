@@ -52,10 +52,20 @@ def FamilleRessourceDotation():
 
 def InterventionSolution():
     _tables_of_ids(['IdInterventionSolution'])
-    solution = read_bspp_table('Appel112_InterventionSolution', nrows=lim_nrows)
+    try:
+        solution = read_bspp_table('Appel112_InterventionSolution', nrows=lim_nrows)
     # cette table est vide
-    # => IdInterventionSolution ne sert pas
-    # TODO: savoir pourquoi
+    # => on utilise resume a la place d'IdInterventionSolution 
+    except:
+        resume = read_bspp_table('Appel112_InterventionResume', nrows=lim_nrows,
+                         usecols = [0,2,3,4,6,7,12,17])
+    #  beaucoup de variables sont dans la table adresse.
+    # IdObjetGeo est IdAdresse dans la table AdresseIntervention alors que cette table
+    # contient aussi un IdObjetGeo différent
+    # les coordonnées X, Y changent de nom et sont arrondies dans resumé mais on 
+    # peut s'en passer.
+
+    # Qu'est ce que 'IdGrilleDepart ? ça a l'air important.
     return solution
 
 
@@ -73,8 +83,33 @@ selection = translate_id_into_label('FamilleRessourcesDotation',
                                     other_cols=["FamilleRessourcesType"]
                                     )
 
-selection = selection.merge(Adresses(lim_nrows))
 
+adresses = Adresses(lim_nrows)
+def pb_in_selection():
+    selection_bis = selection.merge(adresses,
+                            on=['IdAdresseIntervention'])  
+    test = (selection_bis.IdIntervention_x == selection_bis.IdIntervention_y)
+    selection_bis[~test]
+    interventions_a_pb = ['23448', '24596']
+    selection[selection.IdIntervention.isin(interventions_a_pb)]
+    
+selection = selection.merge(adresses,
+                            on=['IdAdresseIntervention'])
+
+
+    
+tables_to_merge('Appel112_InterventionResume',
+                exclude=['IdPersonnelPiquet','IdIntervention'])
+
+
+)
+motif = read_configuration('MotifAlerte')
+_tables_of_ids(['IdMotifAlertePreavis'])
+_tables_of_ids(['IdIntervention'])
+
+    
+    
+xxx
 
 if __name__ == '__main__':
     # Libelle_GTA est plus cohérent avec le Cstc de la table adresse
@@ -82,7 +117,7 @@ if __name__ == '__main__':
     
     # il y a un problème entre les cstc de la table adresse 
     mma = MMA()
-    selection = selection.merge(MMA())
+    selection = selection.merge(MMA(lim_nrows))
     
     mma['test_GTA'] = mma.Libelle_GTA.str.split("_").str[2]
     mma.head()
@@ -90,12 +125,11 @@ if __name__ == '__main__':
     (mma.AbregeEgoTools == mma.test_GTA)
     cond = (mma.AbregeEgoTools == mma.test_GTA)
     cond.value_counts()
-    mma[not cond]
     mma[~cond]
     mma[~cond].head()
     mma[~cond].head(20)
     mma[~cond][['Libelle_GTA', 'AbregeEgoTools']]
-    adresse = Adresses()
+    adresse = Adresses(lim_nrows)
     adresse.head()
     adresse.Cstc.value_counts()
     adresse.Cstc.isin(mma.test_GTA.values)
