@@ -10,3 +10,8 @@ if not os.path.exists('empty_files'):
 for file_ in os.listdir():
     if os.stat(file_).st_size == 0:
         os.rename(file_, "empty_files/" + file_)
+
+if __name__ == '__main__':
+    
+    for file_ in os.listdir("empty_files"):
+        print(file_)
