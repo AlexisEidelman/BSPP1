@@ -30,7 +30,8 @@ def Adresses(lim_nrows=None):
 
     # parcelle est vide !
     #parcelle = read_bspp_table('Appel112_ParcellaireIntervention')
-
+    adresse['code_postal'] = adresse.LibelleAdresse.str.extract('(\d{5})')
+    adresse['departement'] = adresse['code_postal'].str[:2]
     return adresse
 
 
