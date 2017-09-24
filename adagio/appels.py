@@ -96,9 +96,9 @@ def Interventions():
     return
     
 
-def FicheDecisionnelle():
-    Fiche = read_bspp_table("Appel112_Intervention_FicheDecisionnelle")
-    Fiche = Fiche[['IdIntervention','IdFicheDecisionnelle']]
+def FicheDecisionnelle(lim_nrows=lim_nrows):
+    Fiche = read_bspp_table("Appel112_Intervention_FicheDecisionnelle",
+                            usecols=[1,2,3], nrows=lim_nrows)
     R_Fiche = read_bspp_table("Appel112_ArbreDecisionnel_Fiche")
     for nom in ["Categorie", "Pathologie"]:
         nom_table = "Appel112_ArbreDecisionnel_" + nom
@@ -114,6 +114,8 @@ def FicheDecisionnelle():
                           right_on = 'Id',
                           suffixes=('', '_R')
                          )
+    del Fiche['Id']
+    del Fiche['IdFicheDecisionnelle']    
     return Fiche
 
 

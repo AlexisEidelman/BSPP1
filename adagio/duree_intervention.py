@@ -86,12 +86,14 @@ bon_format['hopital'] = bon_format[var_hopital].notnull().sum(1) > 0
 
 
 statut_obligatoire = [
+    #
     'Instance départ',
     'Parti',
     'Sur les lieux',
-    # disponible
-    'Rentré',
+
     'Disponible',
+    #'Rentré', # en fait ce n'est pas obligatoire quand il y a
+    # une présentation spontanée.
     ]
 cond_tout_rempli = bon_format[statut_obligatoire].isnull().sum(1) == 0
 tout_rempli = bon_format.loc[cond_tout_rempli, statut_obligatoire + ['hopital']]
